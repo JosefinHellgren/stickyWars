@@ -19,7 +19,7 @@ struct LoginView: View {
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 30, style: .continuous).foregroundStyle(
-                LinearGradient(colors: [.green,.blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                LinearGradient(colors: [.white,.black], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .frame(width: 400, height: 1000)
                 .rotationEffect(.degrees(135))
                 .offset(y:-35)
@@ -30,38 +30,40 @@ struct LoginView: View {
             
                 Text("SIGN IN")
                     .font(.largeTitle)
-                    .foregroundColor(.white)
+                    .foregroundColor(.purple)
                 
                 
                 TextField("email", text: $email)
-                    .padding(15.0)
+                    .padding(18.0)
                       .background(RoundedRectangle(cornerRadius: 4.0, style: .continuous)
-                                    .stroke(.pink, lineWidth: 2.0))
+                                    .stroke(.purple, lineWidth: 4.0))
                     
                     .padding()
                 SecureField("password", text: $password)
-                    .padding(15.0)
+                    .padding(18.0)
                       .background(RoundedRectangle(cornerRadius: 4.0, style: .continuous)
-                                    .stroke(.pink, lineWidth: 2.0))
+                                    .stroke(.purple, lineWidth: 4.0))
                       .padding()
                 Button(action: {
                     logIn(email: email, password: password)}){
                     Text("Login")
-                    }.background(RoundedRectangle(cornerRadius: 10,style: .continuous) .fill(LinearGradient(colors: [.white,.black], startPoint: .top, endPoint: .bottomTrailing)))
+                    }.background(RoundedRectangle(cornerRadius: 5.0,style: .continuous) .fill(LinearGradient(colors: [.white,.black], startPoint: .top, endPoint: .bottomTrailing)).frame(width: 150, height: 40, alignment: .center))
+                    .foregroundColor(.black)
+                    
                    
                     
                 
                 
                 HStack{
                 Text("Not yet signed up? ")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.purple)
                 Button(action: {signUpViewShow = true}){
                     Text("Sign Up")
                     
                     
-                }.background(.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(4.0)
+                }
+                .foregroundColor(.purple)
+                    
                     .padding()
                 .sheet(isPresented: $signUpViewShow, content: {
                     SignUpView(userIsLoggedIn: $userIsLoggedIn)
@@ -73,7 +75,7 @@ struct LoginView: View {
             }
             
         
-        }.background(.green)
+        }.background(.black)
     }
     func logIn (email : String , password : String){
         
