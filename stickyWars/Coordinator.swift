@@ -12,7 +12,7 @@ import UIKit
 import Combine
 import SwiftUI
 
-class Coordinator :NSObject , ARSessionDelegate {
+class Coordinator : NSObject , ARSessionDelegate {
     @ObservedObject var sceneManager : SceneManager = .shared
   
     var arView : ARView?
@@ -47,6 +47,7 @@ class Coordinator :NSObject , ARSessionDelegate {
         }
         
     }
+ 
   
     
     func loadPictureAsTexture(box : ModelEntity, view: ARView, anchor : ARAnchor){
@@ -90,8 +91,4 @@ class Coordinator :NSObject , ARSessionDelegate {
     }
     
 }
-func saveWorldMap(){
-    
-    
-    
-}
+

@@ -11,6 +11,7 @@ struct MyPhotoCollectionView: View {
     @ObservedObject var collection: Collection = .shared
     var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
     var body: some View {
+        
         VStack{
         ScrollView(.vertical, showsIndicators: false){
             LazyVGrid(columns: gridItemLayout, spacing: 0){
@@ -22,32 +23,30 @@ struct MyPhotoCollectionView: View {
                         print("You pressed \(collection.myPhotoAlbum[index].name)")
                         
                         }){
-                        let url = collection.myPhotoAlbum[index].url
-                        
-                        AsyncImage(url: URL(string: url))
-                       { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(width: 150, height: 150)
-                        
+                            let url = collection.myPhotoAlbum[index].url
                             
+                            AsyncImage(url: URL(string: url))
+                           { image in
+                                image.resizable()
+                            } placeholder: {
+                                ProgressView()
                             }
+                            .frame(width: 150, height: 150)
                             
-                            .buttonStyle(PlainButtonStyle())
+                                
+                                }
+                                
+                                .buttonStyle(PlainButtonStyle())
+                                
+                                .cornerRadius(20.0)
+                                .border(Color.green.opacity(0.60), width: 0.0 )
                             
-                            .cornerRadius(20.0)
-                            .border(Color.green.opacity(0.60), width: 5.0)
-                        
-                    }
-    }
-                                                                }
-                    
-          
-    }
-}
-
+                        }
+        }
+                                                                    }
+        }
+              
+        }
     }
 
 

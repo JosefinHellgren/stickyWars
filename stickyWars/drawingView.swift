@@ -130,9 +130,10 @@ struct Home : View{
                 if let url = url {
                   
                     let db = Firestore.firestore()
+                    let user = Auth.auth().currentUser
                     let urlString = url.absoluteString
                     let drawing = Drawing(url: urlString, name: nameOfDrawing)
-                    try? db.collection("Images").addDocument(from : drawing)
+                    try? db.collection("Users").document(user!.uid).collection("Images").addDocument(from : drawing)
                    
                 }
             }
