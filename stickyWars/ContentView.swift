@@ -57,7 +57,8 @@ struct StartView : View {
     
         VStack(){
             HStack{
-                
+                alertForInput()
+                alertForOutput()
                 Button(action: {
                     showPhotoGalleri.toggle()
                 }){
@@ -67,25 +68,7 @@ struct StartView : View {
                 }
                 .foregroundColor(.pink)
                 .frame(width: 40, height: 40, alignment: .center)
-                Button(action: { sSaveWorldMap()
-                    print("pressed save")
-                    //make so user can write a keyname so they can save multiply maps
-                  
-                }){
-                    Image(systemName: "square.and.arrow.up")
-                    
-                }.foregroundColor(.pink)
-                    .frame(width: 40, height: 40, alignment: .center)
                 
-                Button(action: { loadWorldMap()
-                    print("press load")
-                  
-                }){
-                  Image(systemName: "square.and.arrow.down")
-                    
-                }.foregroundColor(.pink)
-                    .frame(width: 40, height: 40, alignment: .center)
-                Spacer()
                 Button("ARt") {
                     showingAlert = true
                 }
@@ -115,10 +98,8 @@ struct StartView : View {
                 .sheet(isPresented: $showPaintSheet) {
                     Home(canvas: $canvas)
                 }
-                Spacer()
-               
-                
-                Button(action: {
+             
+               Button(action: {
                     showMyCollectionSheet.toggle()
                     print("go to collection")
                     
@@ -162,6 +143,72 @@ struct StartView : View {
     
 
 
+    struct alertForInput : View{
+        @State var showingAlert = false
+        @State var nameOfWorldMap : String = "worldMap"
+        var body: some View{
+            
+            Button("S") {showingAlert = true
+                
+                
+                print("pressed save")
+            }
+            
+            .alert("Name", isPresented: $showingAlert, actions: {
+                        TextField("your gallery", text: $nameOfWorldMap)
+                    .foregroundColor(.pink)
+
+                        
+                        Button("Save", action: {
+                            
+                            
+                            sSaveWorldMap(nameOfWorldMap: nameOfWorldMap)
+                           
+                            })
+                        Button("Cancel", role: .cancel, action: {})
+                    }, message: {
+                        Text("Please enter a name for your Gallery")
+                    })
+            .buttonStyle(.bordered)
+            
+        }
+        
+        
+    }
+    struct alertForOutput : View{
+        @State var showingAlert = false
+        @State var nameOfWorldMap : String = "worldMap"
+        var body: some View{
+            
+            Button("L") {showingAlert = true
+                
+                
+                print("pressed save")
+            }
+            
+            .alert("Name", isPresented: $showingAlert, actions: {
+                        TextField("your gallery", text: $nameOfWorldMap)
+                    .foregroundColor(.pink)
+
+                        
+                        Button("Save", action: {
+                            
+                            
+                            loadWorldMap(nameOfWorldMap: nameOfWorldMap)
+                           
+                            })
+                        Button("Cancel", role: .cancel, action: {})
+                    }, message: {
+                        Text("What Map do you want to see?")
+                    })
+            .buttonStyle(.bordered)
+            
+        }
+        
+        
+    }
+    
+    
     
 func signOutUser(){
     
@@ -231,7 +278,7 @@ func listenForPhotosFirebase(){
         
 }
 }
-    func sSaveWorldMap() {
+func sSaveWorldMap(nameOfWorldMap : String) {
         // here i should save what images is loaded as texture for the box
 
         ARViewContainer.ARVariables.arView.session.getCurrentWorldMap { (worldMap, _) in
@@ -244,13 +291,13 @@ func listenForPhotosFirebase(){
                 
                 let savedMap = UserDefaults.standard
                 //here we chould put a textfield so user can name their worldMap
-                savedMap.set(data, forKey: "WorldMap")
+                savedMap.set(data, forKey: nameOfWorldMap)
                 savedMap.synchronize()
             }
         }
     }
     
-    func loadWorldMap() {
+func loadWorldMap(nameOfWorldMap : String) {
         
        
         let config = ARWorldTrackingConfiguration()
@@ -258,7 +305,7 @@ func listenForPhotosFirebase(){
 
         let storedData = UserDefaults.standard
 
-        if let data = storedData.data(forKey: "WorldMap") {
+        if let data = storedData.data(forKey: nameOfWorldMap) {
             print("found map")
 
             if let unarchiver = try? NSKeyedUnarchiver.unarchivedObject(

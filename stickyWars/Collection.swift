@@ -27,9 +27,10 @@ class Collection : ObservableObject {
     
 
 }
-func createMockData(){
+func createDemoData(){
     //add images and photos to the collections
     
+   
 }
 func listenToFirestore(collection : Collection) {
    // guard let uid = Auth.auth().currentUser?.uid else {return}
