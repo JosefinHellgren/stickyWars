@@ -12,13 +12,17 @@ import Firebase
 struct LoginView: View {
     @State var email : String = ""
     @State var password : String = ""
-    @State var showArView : Bool = false
-    @Binding var isSignedIn : Bool
+    @Binding var userIsLoggedIn : Bool
+   
+   
     @State var signUpViewShow : Bool = false
     var body: some View {
         ZStack{
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .fill(Color.purple.opacity(0.70))
+            RoundedRectangle(cornerRadius: 30, style: .continuous).foregroundStyle(
+                LinearGradient(colors: [.green,.blue], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(width: 400, height: 1000)
+                .rotationEffect(.degrees(135))
+                .offset(y:-35)
                 
                 .padding(20.0)
                            
@@ -43,11 +47,9 @@ struct LoginView: View {
                 Button(action: {
                     logIn(email: email, password: password)}){
                     Text("Login")
-                    }.background(.green)
-                    .foregroundColor(.white)
-                    .font(.largeTitle)
-                    .cornerRadius(4.0)
-                    .padding()
+                    }.background(RoundedRectangle(cornerRadius: 10,style: .continuous) .fill(LinearGradient(colors: [.white,.black], startPoint: .top, endPoint: .bottomTrailing)))
+                   
+                    
                 
                 
                 HStack{
@@ -62,7 +64,7 @@ struct LoginView: View {
                     .cornerRadius(4.0)
                     .padding()
                 .sheet(isPresented: $signUpViewShow, content: {
-                    SignUpView(isSignedIn: $isSignedIn)
+                    SignUpView(userIsLoggedIn: $userIsLoggedIn)
                 })
                 }
                 
@@ -76,8 +78,13 @@ struct LoginView: View {
     func logIn (email : String , password : String){
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-         isSignedIn = true
-          // ...
+         
+            if error != nil {
+                           print(error?.localizedDescription ?? "")
+                       } else {
+                           print("success")
+                           userIsLoggedIn.toggle()
+                       }
         }
         
         
@@ -89,7 +96,8 @@ struct LoginView: View {
 struct SignUpView: View{
     @State var email : String = ""
     @State var password : String = ""
-    @Binding var isSignedIn : Bool
+    @Binding var userIsLoggedIn : Bool
+  
     var body: some View{
         
         ZStack{  RoundedRectangle(cornerRadius: 25, style: .continuous)
@@ -129,9 +137,13 @@ struct SignUpView: View{
         Auth.auth().createUser(withEmail: email, password: password) {authresult    ,error in
            
             if (authresult?.user.uid != nil){
-                isSignedIn = true
+                print("secsessed creating user ")
+                
+                userIsLoggedIn.toggle()
                 
                 
+            }else{
+                print("error with creating user")
             }
             
         }

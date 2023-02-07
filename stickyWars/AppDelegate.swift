@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Create the SwiftUI view that provides the window contents.
-        let firstView = ContentView()
+        let firstView = StartView()
         
         
   

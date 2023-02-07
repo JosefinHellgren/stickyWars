@@ -16,12 +16,20 @@ class Collection : ObservableObject {
     
  
     static let shared = Collection()
+    
+    //demo content images
      @Published var myCollection : [Drawing] = []
+    
+    
     @Published var myPhotoAlbum : [Drawing] = []
     @Published var selectedDrawing : String = "https://firebasestorage.googleapis.com/v0/b/streetgallery-cd734.appspot.com/o/images1E7FFC1C-FF5A-4D66-BC3F-2E0BD06CCD3B.jpeg?alt=media&token=0861bebb-c9e5-4cec-bdad-2f73d6fc753b"
     
     
 
+}
+func createMockData(){
+    //add images and photos to the collections
+    
 }
 func listenToFirestore(collection : Collection) {
    // guard let uid = Auth.auth().currentUser?.uid else {return}

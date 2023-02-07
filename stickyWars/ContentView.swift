@@ -17,31 +17,17 @@ import GameController
 
 
 
-struct ContentView : View {
-   
-    @State var isSignedIn = false
-    
 
-    
-    
-    
-    var body: some View {
-        if !isSignedIn{
-            LoginView(isSignedIn: $isSignedIn)
-        }else{
-            StartView()
-        }
 
-    }
-}
 
 struct StartView : View {
-    @State var isSignedIn : Bool = false
-   
+    
+    
+    @State var userIsLoggedIn = false
     @State private var showingAlert = false
     @ObservedObject var collection: Collection = .shared
     @State var coordinator = Coordinator()
-    @State var myCollection = [UIImage]()
+   // @Published var worldMapisSaved : Bool = false
     @State var showPaintSheet = false
     @State var showPhotoGalleri = false
     @State var showMyCollectionSheet = false
@@ -49,7 +35,23 @@ struct StartView : View {
     @ObservedObject var sceneManager : SceneManager = .shared
     @ObservedObject var scenePersistenceHelper : ScenePersistenceHelper = .shared
     
-   var body: some View{
+    var body: some View{
+        if userIsLoggedIn{
+            content
+        }else{
+            LoginView(userIsLoggedIn: $userIsLoggedIn)
+        }
+        
+    }
+    
+    
+   
+   var content: some View{
+      
+       
+       
+       
+    
     ZStack(alignment: .bottom){
        
     
@@ -65,7 +67,9 @@ struct StartView : View {
                 }
                 .foregroundColor(.pink)
                 .frame(width: 40, height: 40, alignment: .center)
-                Button(action: { print("shit")
+                Button(action: { sSaveWorldMap()
+                    print("pressed save")
+                    //make so user can write a keyname so they can save multiply maps
                   
                 }){
                     Image(systemName: "square.and.arrow.up")
@@ -73,7 +77,8 @@ struct StartView : View {
                 }.foregroundColor(.pink)
                     .frame(width: 40, height: 40, alignment: .center)
                 
-                Button(action: { //should be the load button
+                Button(action: { loadWorldMap()
+                    print("press load")
                   
                 }){
                   Image(systemName: "square.and.arrow.down")
@@ -92,6 +97,9 @@ struct StartView : View {
                     Button("OK", role: .cancel) { }
                 }
             Spacer()
+                Button(action: {signOutUser()}){
+                    Image(systemName: "person.fill.xmark")
+                }
             Button(action: {
                 showPaintSheet.toggle()
                 print("go to drawing")
@@ -119,7 +127,7 @@ struct StartView : View {
                  Image(systemName: "backpack")
                 }.foregroundColor(.pink)
                     .frame(width: 40.0, height: 40.0, alignment: .center)
-                    Spacer()
+                 
               
                     .sheet(isPresented: $showMyCollectionSheet) {
                         MyCollectionView()
@@ -141,18 +149,37 @@ struct StartView : View {
     }.onAppear(){
         listenToFirestore()
         listenForPhotosFirebase()
+            Auth.auth().addStateDidChangeListener
+        {
+            auth , user in
+            if user != nil{
+                userIsLoggedIn = true
+            }
+        }
     }
     
 }
     
 
 
-    }
+    
+func signOutUser(){
+    
+    let firebaseAuth = Auth.auth()
+ do {
+   try firebaseAuth.signOut()
+     userIsLoggedIn = false
+ } catch let signOutError as NSError {
+   print("Error signing out: %@", signOutError)
+ }
+}
+}
 func listenToFirestore() {
     @ObservedObject var collection: Collection = .shared
     
     let db = Firestore.firestore()
-        db.collection("Images").addSnapshotListener { snapshot, err in
+    let user = Auth.auth().currentUser
+    db.collection("Users").document(user!.uid).collection("Images").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
@@ -179,13 +206,14 @@ func listenForPhotosFirebase(){
     @ObservedObject var collection: Collection = .shared
     
     let db = Firestore.firestore()
-        db.collection("Photos").addSnapshotListener { snapshot, err in
+    let user = Auth.auth().currentUser
+    db.collection("Users").document(user!.uid).collection("Photos").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
                 print("Error getting document \(err)")
             } else {
-                collection.myCollection.removeAll()
+                collection.myPhotoAlbum.removeAll()
                 for document in snapshot.documents {
 
                     let result = Result {
@@ -193,7 +221,7 @@ func listenForPhotosFirebase(){
                     }
                     switch result  {
                     case .success(let drawing)  :
-                        collection.myCollection.append(drawing)
+                        collection.myPhotoAlbum.append(drawing)
                     case .failure(let error) :
                         print("Error decoding item: \(error)")
                     }
@@ -202,7 +230,9 @@ func listenForPhotosFirebase(){
         }
         
 }
+}
     func sSaveWorldMap() {
+        // here i should save what images is loaded as texture for the box
 
         ARViewContainer.ARVariables.arView.session.getCurrentWorldMap { (worldMap, _) in
             
@@ -213,6 +243,7 @@ func listenForPhotosFirebase(){
                 print("found a map")
                 
                 let savedMap = UserDefaults.standard
+                //here we chould put a textfield so user can name their worldMap
                 savedMap.set(data, forKey: "WorldMap")
                 savedMap.synchronize()
             }
@@ -220,6 +251,8 @@ func listenForPhotosFirebase(){
     }
     
     func loadWorldMap() {
+        
+       
         let config = ARWorldTrackingConfiguration()
         
 
@@ -232,21 +265,33 @@ func listenForPhotosFirebase(){
                                    ofClasses: [ARWorldMap.classForKeyedUnarchiver()],
                                         from: data),
                let worldMap = unarchiver as? ARWorldMap {
-
+                    print("seems to work")
+                
+                
+                
+                for anchor in worldMap.anchors{
+                    
+                    let anchorEntety = AnchorEntity(anchor: anchor)
+                    
+                    let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
+                    
+                    let box = ModelEntity(mesh: mesh)
+                    
+                   
+                    
+                    
+                    
+                    anchorEntety.addChild(box)
+                    ARViewContainer.ARVariables.arView.scene.addAnchor(anchorEntety)
+                }
                 config.initialWorldMap = worldMap
+                config.planeDetection = .vertical
                 ARViewContainer.ARVariables.arView.session.run(config)
             }
         }
     }
    
  
-}
-    
-
-
-
-
-
 struct modelPickerView : View{
     @ObservedObject var collection: Collection = .shared
     @Binding var showPaintSheet : Bool
@@ -352,8 +397,9 @@ struct modelPickerView : View{
                       
                         let db = Firestore.firestore()
                         let urlString = url.absoluteString
+                        let user = Auth.auth().currentUser
                         let drawing = Drawing(url: urlString, name: "photo")
-                        try? db.collection("Photos").addDocument(from : drawing)
+                        try? db.collection("Users").document(user!.uid).collection("Photos").addDocument(from : drawing)
                        
                     }
                 }
@@ -396,6 +442,7 @@ struct modelPickerView : View{
             
         
     }
+    }
     struct controllButtonBar : View{
         
         var body: some View{
@@ -413,7 +460,7 @@ struct modelPickerView : View{
     }
    
     
-    }
+    
     
 
     
