@@ -18,7 +18,7 @@ class ScenePersistenceHelper : ObservableObject{
         arView.session.getCurrentWorldMap{ worldMap, error in
             guard let map = worldMap else{
                 
-                print("persistence error, unable to get worldMap\(error?.localizedDescription)")
+                print("persistence error, unable to get worldMap")
                 return
                 
             
