@@ -25,6 +25,7 @@
 		A936A01F29928D15002C2BA2 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A01E29928D15002C2BA2 /* Gallery.swift */; };
 		A936A02129928D83002C2BA2 /* Gallerys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A02029928D83002C2BA2 /* Gallerys.swift */; };
 		A936A0232992A222002C2BA2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A936A0222992A222002C2BA2 /* Launch Screen.storyboard */; };
+		A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A0252994F0BB002C2BA2 /* Anchors.swift */; };
 		A96C324D2981719B006B5F30 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C324C2981719B006B5F30 /* ARViewContainer.swift */; };
 		A96C324F298181C0006B5F30 /* ScenePersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C324E298181C0006B5F30 /* ScenePersistenceHelper.swift */; };
 		A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C329629828E2D006B5F30 /* arViewExtension.swift */; };
@@ -73,6 +74,7 @@
 		A936A02029928D83002C2BA2 /* Gallerys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallerys.swift; sourceTree = "<group>"; };
 		A936A0222992A222002C2BA2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A936A0242992A574002C2BA2 /* cute-paint-brush-character-flat-cartoon-vector-template-design-illustration_570764-2572.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cute-paint-brush-character-flat-cartoon-vector-template-design-illustration_570764-2572.webp"; sourceTree = "<group>"; };
+		A936A0252994F0BB002C2BA2 /* Anchors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchors.swift; sourceTree = "<group>"; };
 		A96C324C2981719B006B5F30 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
 		A96C324E298181C0006B5F30 /* ScenePersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePersistenceHelper.swift; sourceTree = "<group>"; };
 		A96C329629828E2D006B5F30 /* arViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = arViewExtension.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				A96C32982982B121006B5F30 /* Drawing.swift */,
 				A96C329D298A95FD006B5F30 /* MyCollectionView.swift */,
 				A936A01E29928D15002C2BA2 /* Gallery.swift */,
+				A936A0252994F0BB002C2BA2 /* Anchors.swift */,
 				A96C32DF298BDC96006B5F30 /* SignUpView.swift */,
 				A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */,
 				A936A02029928D83002C2BA2 /* Gallerys.swift */,
@@ -337,6 +340,7 @@
 				A936A01F29928D15002C2BA2 /* Gallery.swift in Sources */,
 				A96C324D2981719B006B5F30 /* ARViewContainer.swift in Sources */,
 				A92C4804296DADEC0066ABDF /* ContentView.swift in Sources */,
+				A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */,
 				A96C329E298A95FD006B5F30 /* MyCollectionView.swift in Sources */,
 				A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */,
 				A96C32E22991524D006B5F30 /* MyPhotoCollectionView.swift in Sources */,

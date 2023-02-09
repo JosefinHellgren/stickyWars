@@ -14,7 +14,7 @@ struct MyCollectionView: View {
     @State var mySelectedImage = String()
     @State var showBigPic : Bool = false
     
-    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
+    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 15), count: 3)
     var body: some View {
         VStack{
             
@@ -23,9 +23,10 @@ struct MyCollectionView: View {
                 showPicker = true
                 
             }){
-                Image(systemName: "plus.app")
+                Image(systemName: "plus.circle.fill")
                     .resizable()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color.pink.opacity(0.40))
+                    
                    
                     .frame(width: 80, height: 80, alignment: .center)
                 
@@ -37,7 +38,7 @@ struct MyCollectionView: View {
             
         
             ScrollView(.vertical, showsIndicators: false){
-                LazyVGrid(columns: gridItemLayout, spacing: 0){
+                LazyVGrid(columns: gridItemLayout, spacing: 15){
            
                 
              
@@ -80,7 +81,7 @@ struct MyCollectionView: View {
                                                                     }
                         
               
-        }
+        }.background(Color.green.opacity(0.50))
     }
     
 }

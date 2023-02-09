@@ -9,12 +9,12 @@ import SwiftUI
 
 struct MyPhotoCollectionView: View {
     @ObservedObject var collection: Collection = .shared
-    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
+    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 15), count: 3)
     var body: some View {
         
         VStack{
         ScrollView(.vertical, showsIndicators: false){
-            LazyVGrid(columns: gridItemLayout, spacing: 0){
+            LazyVGrid(columns: gridItemLayout, spacing: 4){
        
             ForEach(0..<collection.myPhotoAlbum.count,id: \.self){
                     index in
@@ -35,16 +35,17 @@ struct MyPhotoCollectionView: View {
                             
                                 
                                 }
-                                
-                                .buttonStyle(PlainButtonStyle())
-                                
+                        .padding()
+                                .buttonStyle(BorderedButtonStyle())
+                                .shadow(radius: 15)
                                 .cornerRadius(20.0)
                                 .border(Color.green.opacity(0.60), width: 0.0 )
                             
-                        }
-        }
+            }.padding(15)
+            }
                                                                     }
         }
+        .background(Color.blue.opacity(0.30))
               
         }
     }

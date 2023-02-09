@@ -59,30 +59,25 @@ struct StartView : View {
                 HStack{
                     alertForInput()
                     alertForOutput()
-                    Button(action: {
-                        showPhotoGalleri.toggle()
-                    }){
-                        Image(systemName: "photo")
-                    }.sheet(isPresented: $showPhotoGalleri) {
-                        MyPhotoCollectionView()
-                    }
-                    .foregroundColor(.pink)
-                    .frame(width: 40, height: 40, alignment: .center)
                     
-                    Button("ARt") {
+                    
+                    Button(action: {
                         showingAlert = true
+                    }){
+                        Image(systemName: "eye")
                     }
-                    .foregroundColor(.pink)
-                    .frame(width: 40.0, height: 40.0, alignment: .center)
+                    .foregroundColor(.black)
+                    .frame(width: 60.0, height: 60.0, alignment: .center)
                     
                     
                     .alert("ARt är en app där du kan skapa dina konstverk och sedan placera ut dom i den virtuella verkligheten med hjälp av Augumented reality", isPresented: $showingAlert) {
                         Button("OK", role: .cancel) { }
                     }
-                    Spacer()
+                    
                     Button(action: {signOutUser()}){
                         Image(systemName: "person.fill.xmark")
-                    }
+                    }.foregroundColor(.black)
+                        .frame(width: 55, height: 55, alignment: .center)
                     Button(action: {
                         showPaintSheet.toggle()
                         print("go to drawing")
@@ -91,8 +86,8 @@ struct StartView : View {
                         //change to brush picture
                         Image(systemName: "paintbrush")
                             .cornerRadius(20.0)
-                    }.foregroundColor(.pink)
-                        .frame(width: 40, height: 40, alignment: .center)
+                    }.foregroundColor(.black)
+                        .frame(width: 50, height: 50, alignment: .center)
                     
                     
                         .sheet(isPresented: $showPaintSheet) {
@@ -106,21 +101,38 @@ struct StartView : View {
                     }){
                         //change to brush picture
                         Image(systemName: "backpack")
-                    }.foregroundColor(.pink)
-                        .frame(width: 40.0, height: 40.0, alignment: .center)
+                    }.foregroundColor(.black)
+                        .frame(width: 50.0, height: 50.0, alignment: .center)
                     
                     
                         .sheet(isPresented: $showMyCollectionSheet) {
                             MyCollectionView()
                         }
+                    Button(action: {
+                        showPhotoGalleri.toggle()
+                    }){
+                        Image(systemName: "photo")
+                            
+                    }.sheet(isPresented: $showPhotoGalleri) {
+                        MyPhotoCollectionView()
+                    }
+                    .foregroundColor(.black)
+                    .frame(width: 50, height: 50, alignment: .center)
                     
-                }.padding()
+                }.background(Color.yellow.opacity(0.200))
+                    .cornerRadius(30)
+                
+                .padding()
                 //Text("\(getEmal())").foregroundColor(.pink)
                 //controllButtonBar()
                 ARViewContainer()
                     .edgesIgnoringSafeArea(.all)
+                    .cornerRadius(30)
+                    .padding()
+                    .background(Color.pink.opacity(0.50))
                 
-            }
+            }.background(Color.yellow.opacity(0.50))
+            
             
             
             
@@ -303,6 +315,12 @@ func sSaveWorldMap(nameOfWorldMap : String) {
     }
 }
 func loadMapFromStorage(name : String){
+    @State var imageName : String =
+    "https://firebasestorage.googleapis.com:443/v0/b/streetgallery-cd734.appspot.com/o/DE71BB65-C95B-47C1-8988-327D75D1B55F.jpeg?alt=media&token=36685c18-f837-4359-b09c-7a2505c7aaef"
+   
+   
+    let db = Firestore.firestore()
+    @ObservedObject var coordinator : Coordinator = .shared
     
     let storageRef = Storage.storage().reference()
     let path = name
@@ -322,85 +340,48 @@ func loadMapFromStorage(name : String){
                 
                 for anchor in worldMap.anchors{
                     
-                    let anchorEntety = AnchorEntity(anchor: anchor)
-                    
+                    db.collection("Anchors").document(anchor.identifier.uuidString).getDocument() {
+                        document, error in
+                       
+                        guard let document = document else {return }
+                        
+                        let result = Result {
+                            try document.data(as: Anchors.self)
+                        }
+                        switch result  {
+                        case .success(let anchor)  :
+                          
+                            print(anchor.image)
+                            
+                            imageName = anchor.image
+                            
+                        case .failure(let error) :
+                            print("Error decoding item: \(error)")
+                        }
+                        
+                        
+                    }
                     let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
                     
                     let box = ModelEntity(mesh: mesh)
+                    box.generateCollisionShapes(recursive: true)
                     
                     
+                    coordinator.loadPictureAsTextureSAved(box: box, view: ARViewContainer.ARVariables.arView, anchor: anchor, anchorName: imageName)
                     
-                    
-                    
-                    anchorEntety.addChild(box)
-                    ARViewContainer.ARVariables.arView.scene.addAnchor(anchorEntety)
                 }
                 config.initialWorldMap = worldMap
                 config.planeDetection = .vertical
                 ARViewContainer.ARVariables.arView.session.run(config)
             }
             
-            
-            
-            
-            
         }else{
             
             
-            
-            
-            
         }
-        
-        
-        
-        
-        
     }
     
 }
-
-func loadWorldMap(nameOfWorldMap : String) {
-    
-    
-    let config = ARWorldTrackingConfiguration()
-    
-    
-    let storedData = UserDefaults.standard
-    
-    if let data = storedData.data(forKey: nameOfWorldMap) {
-        print("found map")
-        
-        if let unarchiver = try? NSKeyedUnarchiver.unarchivedObject(
-            ofClasses: [ARWorldMap.classForKeyedUnarchiver()],
-            from: data),
-           let worldMap = unarchiver as? ARWorldMap {
-            print("seems to work")
-            
-            
-            
-            for anchor in worldMap.anchors{
-                
-                let anchorEntety = AnchorEntity(anchor: anchor)
-                
-                let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
-                
-                let box = ModelEntity(mesh: mesh)
-                
-                
-                
-                
-                
-                anchorEntety.addChild(box)
-                ARViewContainer.ARVariables.arView.scene.addAnchor(anchorEntety)
-            }
-            config.initialWorldMap = worldMap
-            config.planeDetection = .vertical
-            ARViewContainer.ARVariables.arView.session.run(config)
-        }
-    }
-}
-
 
 struct modelPickerView : View{
     @ObservedObject var collection: Collection = .shared
@@ -453,19 +434,22 @@ struct modelPickerView : View{
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(width: 70, height: 70)
+                        .frame(width: 80, height: 80)
                         .opacity(0.70)
+                        
                         
                     }
                     .buttonStyle(PlainButtonStyle())
                     
                     .cornerRadius(20.0)
-                    .border(Color.green.opacity(0.60), width: collection.selectedDrawing == collection.myCollection[index].url ? 5.0 : 0.0 )
+                    .border(Color.pink.opacity(0.60), width: collection.selectedDrawing == collection.myCollection[index].url ? 5.0 : 0.0 )
+                    .cornerRadius(20.0)
                     
                 }
                 
                 
-            }.background(Color.pink.opacity(0.25))
+            }.background(Color.white.opacity(0.25))
+                .padding()
             
             
             

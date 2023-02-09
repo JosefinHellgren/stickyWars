@@ -11,8 +11,11 @@ import RealityKit
 import UIKit
 import Combine
 import SwiftUI
+import FirebaseStorage
+import FirebaseFirestore
 
-class Coordinator : NSObject , ARSessionDelegate {
+class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
+    static let shared = Coordinator()
     @ObservedObject var sceneManager : SceneManager = .shared
   
     var arView : ARView?
@@ -21,6 +24,7 @@ class Coordinator : NSObject , ARSessionDelegate {
     weak var view : ARView?
     
     @objc func handleTap(recognizer : UITapGestureRecognizer){
+        @ObservedObject var collection: Collection = .shared
        
         
         
@@ -32,7 +36,9 @@ class Coordinator : NSObject , ARSessionDelegate {
         if let results = results.first{
             print("tapped arview")
             
-            let anchor = ARAnchor(name: "Plane Anchor", transform: results.worldTransform)
+            
+            
+            let anchor = ARAnchor(name: "plane anchor" , transform: results.worldTransform)
             view.session.add(anchor: anchor)
             
             self.sceneManager.anchorEntitys.append(anchor)
@@ -40,7 +46,8 @@ class Coordinator : NSObject , ARSessionDelegate {
             
             let box = ModelEntity(mesh: mesh)
             box.generateCollisionShapes(recursive: true)
-           
+            
+            saveAnchorsToFirestore(anchorID: anchor.identifier, selectedDrawing: collection.selectedDrawing)
             
             loadPictureAsTexture(box: box, view: view, anchor: anchor)
             
@@ -49,6 +56,14 @@ class Coordinator : NSObject , ARSessionDelegate {
     }
  
   
+    func saveAnchorsToFirestore (anchorID : UUID, selectedDrawing : String){
+        
+        let anchor = Anchors(identifier: anchorID, image: selectedDrawing)
+        let db = Firestore.firestore()
+        try? db.collection("Anchors").document(anchorID.uuidString).setData(from: anchor)
+        
+    }
+    
     
     func loadPictureAsTexture(box : ModelEntity, view: ARView, anchor : ARAnchor){
         @ObservedObject var collection: Collection = .shared
@@ -89,6 +104,50 @@ class Coordinator : NSObject , ARSessionDelegate {
         }
         session.resume()
     }
+ 
     
-}
+    
+    func loadPictureAsTextureSAved(box : ModelEntity, view: ARView, anchor : ARAnchor, anchorName : String){
+        @ObservedObject var collection: Collection = .shared
+        
+        let urlTest = anchorName
+
+        
+
+        guard let imageURL = URL(string: urlTest) else { return }
+        
+        let session = URLSession(configuration: .default).dataTask(with: imageURL) {
+            imageData, response, error in
+            
+            if let data = imageData {
+                
+                DispatchQueue.main.async {
+                    
+                    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                    let filePath = documentsDirectory.appendingPathComponent("sky.png")
+                    try? data.write(to: filePath)
+                    let texture = try? TextureResource.load(contentsOf: filePath)
+                    
+                    if let texture = texture {
+                        
+                        var material = UnlitMaterial()
+                        material.color = .init(tint: .white, texture : .init(texture))
+                        box.model?.materials = [material]
+                        
+                        
+                        let anchorentety = AnchorEntity(anchor: anchor)
+                        anchorentety.addChild(box)
+                        view.scene.addAnchor(anchorentety)
+                        view.installGestures(.all, for: box)
+                        
+                    }
+                }
+            }
+        }
+        session.resume()
+    }
+
+    }
+
+
 
