@@ -31,7 +31,7 @@ struct ARViewContainer: UIViewRepresentable {
         
         
         let config = ARWorldTrackingConfiguration()
-        config.planeDetection = [.vertical]
+        config.planeDetection = [.vertical, .horizontal]
         config.environmentTexturing = .automatic
         config.isCollaborationEnabled = true
         
