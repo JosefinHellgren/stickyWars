@@ -10,12 +10,16 @@ class Gallery {
     
     var worldMap : String
     var location : String
+    var descriptonOfPlacement: String
+    var userName : String
     
     
-    init(worldMap : String, location : String){
+    init(worldMap : String, location : String, descriptionOfPlacement : String, userName : String){
         
         self.worldMap = worldMap
         self.location = location
+        self.descriptonOfPlacement = descriptionOfPlacement
+        self.userName = userName
     }
     
     

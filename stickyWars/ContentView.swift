@@ -28,6 +28,8 @@ struct StartView : View {
     @ObservedObject var collection: Collection = .shared
     @State var coordinator = Coordinator()
     // @Published var worldMapisSaved : Bool = false
+    @State var showMapSheet = false
+    
     @State var showPaintSheet = false
     @State var showPhotoGalleri = false
     @State var showMyCollectionSheet = false
@@ -94,6 +96,22 @@ struct StartView : View {
                             Home(canvas: $canvas)
                         }
                     
+                    /*Button(action: {
+                        showMapSheet.toggle()
+                        print("go to drawing")
+                        
+                    }){
+                        //change to brush picture
+                        Image(systemName: "map")
+                            .cornerRadius(20.0)
+                    }.foregroundColor(.black)
+                        .frame(width: 50, height: 50, alignment: .center)
+                    
+                    
+                        .sheet(isPresented: $showMapSheet) {
+                            MapView()
+                        }*/
+                    
                     Button(action: {
                         showMyCollectionSheet.toggle()
                         print("go to collection")
@@ -129,9 +147,12 @@ struct StartView : View {
                     .edgesIgnoringSafeArea(.all)
                     .cornerRadius(30)
                     .padding()
-                    .background(Color.pink.opacity(0.50))
+                    .background(LinearGradient(colors: [Color.yellow, Color.white.opacity(0.25)], startPoint: .topLeading, endPoint: .bottomTrailing) )
+                    .background(LinearGradient(colors: [Color.yellow.opacity(0.4), Color.pink.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .background(Color.white.opacity(0.2))
                 
-            }.background(Color.yellow.opacity(0.50))
+            }.background(LinearGradient(colors: [Color.orange.opacity(0.4), Color.yellow.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+            .background(LinearGradient(colors: [Color.orange.opacity(0.5), Color.yellow], startPoint: .topLeading, endPoint: .bottomTrailing))
             
             
             
@@ -173,6 +194,8 @@ struct StartView : View {
                 
                 Button("Save", action: {
                     
+                    //saveusercurrentLocation
+                    //save users email
                     
                     saveMapToFirebaseStorage(name: nameOfWorldMap)
                     
@@ -195,7 +218,7 @@ struct StartView : View {
             Button("L") {showingAlert = true
                 
                 
-                print("pressed save")
+                print("pressed load")
             }
             
             .alert("Name", isPresented: $showingAlert, actions: {
@@ -204,7 +227,8 @@ struct StartView : View {
                 
                 
                 Button("Load", action: {
-                    
+                    //this button should be placed at a pin at the map and the choosen pin should be tagged with the url to that worldMap
+                    //FOREACH PIN ON MAP: take name on pin and load that worldMap in the ARVIEW
                     
                     loadMapFromStorage(name: nameOfWorldMap)
                     
@@ -315,13 +339,14 @@ func sSaveWorldMap(nameOfWorldMap : String) {
     }
 }
 func loadMapFromStorage(name : String){
+    
     @State var imageName : String =
     "https://firebasestorage.googleapis.com:443/v0/b/streetgallery-cd734.appspot.com/o/DE71BB65-C95B-47C1-8988-327D75D1B55F.jpeg?alt=media&token=36685c18-f837-4359-b09c-7a2505c7aaef"
    
    
-    let db = Firestore.firestore()
+   
     @ObservedObject var coordinator : Coordinator = .shared
-    
+    let db = Firestore.firestore()
     let storageRef = Storage.storage().reference()
     let path = name
     let fileRef = storageRef.child(path)
@@ -339,29 +364,12 @@ func loadMapFromStorage(name : String){
                 
                 
                 for anchor in worldMap.anchors{
+                    //kommer ej ens in i firestore kodblock
                     
-                    db.collection("Anchors").document(anchor.identifier.uuidString).getDocument() {
-                        document, error in
-                       
-                        guard let document = document else {return }
-                        
-                        let result = Result {
-                            try document.data(as: Anchors.self)
-                        }
-                        switch result  {
-                        case .success(let anchor)  :
-                          
-                            print(anchor.image)
-                            
-                            imageName = anchor.image
-                            
-                        case .failure(let error) :
-                            print("Error decoding item: \(error)")
-                        }
-                        
-                        
-                    }
-                    let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
+                 
+                    
+                    
+                let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
                     
                     let box = ModelEntity(mesh: mesh)
                     box.generateCollisionShapes(recursive: true)
@@ -382,6 +390,7 @@ func loadMapFromStorage(name : String){
     }
     
 }
+
 
 struct modelPickerView : View{
     @ObservedObject var collection: Collection = .shared
