@@ -10,6 +10,8 @@ import SwiftUI
 struct MyPhotoCollectionView: View {
     @ObservedObject var collection: Collection = .shared
     var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 15), count: 3)
+    @State var mySelectedPhoto = String()
+    @State var showBigPic : Bool = false
     var body: some View {
         
         VStack{
@@ -20,21 +22,37 @@ struct MyPhotoCollectionView: View {
                     index in
                     
                     Button(action: {
-                        print("You pressed \(collection.myPhotoAlbum[index].name)")
+                     
                         
-                        }){
-                            let url = collection.myPhotoAlbum[index].url
+                        collection.selectedPhoto = collection.myPhotoAlbum[index].url
+                        showBigPic = true
+                        mySelectedPhoto = collection.myPhotoAlbum[index].url
+                        
+                           
+                        
+                    }){
+                        let url = collection.myPhotoAlbum[index].url
+                        
+                        AsyncImage(url: URL(string: url))
+                       { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 150, height: 150)
+                        
                             
-                            AsyncImage(url: URL(string: url))
-                           { image in
-                                image.resizable()
-                            } placeholder: {
-                                ProgressView()
+                            }.sheet(isPresented: $showBigPic) {
+                                BigPic(image: $mySelectedPhoto)
                             }
-                            .frame(width: 150, height: 150)
+                            
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            .cornerRadius(20.0)
+                            .border(Color.green.opacity(0.60), width: collection.selectedPhoto == collection.myPhotoAlbum[index].url ? 5.0 : 0.0 )
                             
                                 
-                                }
+                                
                         .padding()
                                 .buttonStyle(BorderedButtonStyle())
                                 .shadow(radius: 15)

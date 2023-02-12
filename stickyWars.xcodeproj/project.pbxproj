@@ -36,6 +36,7 @@
 		A96C32E0298BDC97006B5F30 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C32DF298BDC96006B5F30 /* SignUpView.swift */; };
 		A96C32E22991524D006B5F30 /* MyPhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */; };
 		A99D1F012976D92C0013195E /* arcore-ios-sdk-1 in Resources */ = {isa = PBXBuildFile; fileRef = A99D1F002976D92C0013195E /* arcore-ios-sdk-1 */; };
+		A9C325F5299964BD007AF07C /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C325F4299964BD007AF07C /* MapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		A96C32DF298BDC96006B5F30 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPhotoCollectionView.swift; sourceTree = "<group>"; };
 		A99D1F002976D92C0013195E /* arcore-ios-sdk-1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "arcore-ios-sdk-1"; sourceTree = "<group>"; };
+		A9C325F4299964BD007AF07C /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 				A96C32982982B121006B5F30 /* Drawing.swift */,
 				A96C329D298A95FD006B5F30 /* MyCollectionView.swift */,
 				A936A01E29928D15002C2BA2 /* Gallery.swift */,
+				A9C325F4299964BD007AF07C /* MapView.swift */,
 				A936A0252994F0BB002C2BA2 /* Anchors.swift */,
 				A96C32DF298BDC96006B5F30 /* SignUpView.swift */,
 				A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */,
@@ -343,6 +346,7 @@
 				A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */,
 				A96C329E298A95FD006B5F30 /* MyCollectionView.swift in Sources */,
 				A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */,
+				A9C325F5299964BD007AF07C /* MapView.swift in Sources */,
 				A96C32E22991524D006B5F30 /* MyPhotoCollectionView.swift in Sources */,
 				A96C32E0298BDC97006B5F30 /* SignUpView.swift in Sources */,
 				A90E9E1C2979703B000A6CB7 /* Coordinator.swift in Sources */,

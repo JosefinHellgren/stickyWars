@@ -19,34 +19,18 @@ struct LoginView: View {
     var body: some View {
         
         ZStack{
-            /*RoundedRectangle(cornerRadius: 30, style: .continuous).foregroundStyle(
-                LinearGradient(colors: [.white,.black], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(width: 300, height: 1000)
-                //.rotationEffect(.degrees(40))
-                .offset(y:-35)*/
-            
-            
-            Rectangle()
-            .fill(
-                LinearGradient(
-                    gradient: Gradient(stops: [
-                        Gradient.Stop(color: .red, location: 0.5),
-                        Gradient.Stop(color: .black, location: 0.5)
-                    ]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing))
-            .frame(width: 400, height: 1000)
             
             
             
             
-            Rectangle()
-                .rotation(.degrees(45), anchor: .bottomLeading)
-                .scale(sqrt(2), anchor: .bottomLeading)
-                .frame(width: 400, height: 1000)
-                .background(Color.orange).opacity(0.50)
-                .foregroundColor(Color.teal.opacity(0.50))
-                .clipped()
+            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .fill(Color.orange.opacity(0.40))
+                    .shadow(radius: 20)
+                    .padding(45.0)
+                    .background(LinearGradient(colors: [Color.white , Color.white.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .background(LinearGradient(colors: [Color.blue , Color.blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .background(LinearGradient(colors: [Color.green.opacity(0.4) , Color.purple.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+           
                 
                
                            
@@ -58,7 +42,7 @@ struct LoginView: View {
                 
                 
                 TextField("email", text: $email)
-                    .font(.largeTitle)
+                    .font(.title)
                     .padding(15.0)
                         .background(RoundedRectangle(cornerRadius: 4.0, style: .continuous)
                                       .stroke(.black, lineWidth: 2.0)
@@ -69,7 +53,7 @@ struct LoginView: View {
                     
                     
                 SecureField("password", text: $password)
-                    .font(.largeTitle)
+                    .font(.title)
                     .padding(15.0)
                         .background(RoundedRectangle(cornerRadius: 4.0, style: .continuous)
                                       .stroke(.black, lineWidth: 2.0)
@@ -110,7 +94,7 @@ struct LoginView: View {
             }
             
         
-        }.background(.black)
+        }
     }
     func logIn (email : String , password : String){
         
@@ -138,10 +122,12 @@ struct SignUpView: View{
     var body: some View{
         
         ZStack{  RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .fill(Color.pink.opacity(0.70))
+                .fill(Color.pink.opacity(0.40))
                 .shadow(radius: 20)
-                .padding(20.0)
-                .background(.blue)
+                .padding(45.0)
+                .background(LinearGradient(colors: [Color.white , Color.white.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .background(LinearGradient(colors: [Color.blue , Color.blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .background(LinearGradient(colors: [Color.green.opacity(0.4) , Color.purple.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
             VStack{
         Text("SIGN UP")
                     .foregroundColor(.white)
@@ -165,7 +151,7 @@ struct SignUpView: View{
             Text("signUp")
         }
         .background(RoundedRectangle(cornerRadius: 5.0,style: .continuous) .fill(LinearGradient(colors: [.white,.white], startPoint: .top, endPoint: .bottomTrailing)).frame(width: 70, height: 30, alignment: .center))
-        .foregroundColor(.black)
+        .foregroundColor(.black.opacity(0.8))
             }
     }
     }
