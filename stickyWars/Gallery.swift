@@ -6,20 +6,27 @@
 //
 
 import Foundation
-class Gallery {
+class Gallery : Encodable, Identifiable, Decodable{
     
+    
+    let id = UUID()
     var worldMap : String
-    var location : String
+    var latitude : Double
+    var longitude : Double
     var descriptonOfPlacement: String
     var userName : String
     
     
-    init(worldMap : String, location : String, descriptionOfPlacement : String, userName : String){
+    
+    init(worldMap : String, longitude : Double, latitude : Double , descriptionOfPlacement : String, userName : String){
         
         self.worldMap = worldMap
-        self.location = location
+        self.longitude = longitude
+        self.latitude = latitude
         self.descriptonOfPlacement = descriptionOfPlacement
         self.userName = userName
+        
+        
     }
     
     

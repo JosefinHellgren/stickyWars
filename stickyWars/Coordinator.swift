@@ -16,7 +16,7 @@ import FirebaseFirestore
 
 class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     static let shared = Coordinator()
-    @ObservedObject var sceneManager : SceneManager = .shared
+    /*@ObservedObject var sceneManager : SceneManager = .shared*/
   
     var arView : ARView?
     
@@ -41,7 +41,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
             let anchor = ARAnchor(name: "plane anchor" , transform: results.worldTransform)
             view.session.add(anchor: anchor)
             
-            self.sceneManager.anchorEntitys.append(anchor)
+            /*self.sceneManager.anchorEntitys.append(anchor)*/
             let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
             
             let box = ModelEntity(mesh: mesh)

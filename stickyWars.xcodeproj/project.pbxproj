@@ -37,6 +37,7 @@
 		A96C32E22991524D006B5F30 /* MyPhotoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */; };
 		A99D1F012976D92C0013195E /* arcore-ios-sdk-1 in Resources */ = {isa = PBXBuildFile; fileRef = A99D1F002976D92C0013195E /* arcore-ios-sdk-1 */; };
 		A9C325F5299964BD007AF07C /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C325F4299964BD007AF07C /* MapView.swift */; };
+		A9C325F7299B9B1C007AF07C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C325F6299B9B1C007AF07C /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPhotoCollectionView.swift; sourceTree = "<group>"; };
 		A99D1F002976D92C0013195E /* arcore-ios-sdk-1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "arcore-ios-sdk-1"; sourceTree = "<group>"; };
 		A9C325F4299964BD007AF07C /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		A9C325F6299B9B1C007AF07C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 				A92C4801296DADEC0066ABDF /* AppDelegate.swift */,
 				A90E9ED829801FF9000A6CB7 /* Collection.swift */,
 				A96C32982982B121006B5F30 /* Drawing.swift */,
+				A9C325F6299B9B1C007AF07C /* LocationManager.swift */,
 				A96C329D298A95FD006B5F30 /* MyCollectionView.swift */,
 				A936A01E29928D15002C2BA2 /* Gallery.swift */,
 				A9C325F4299964BD007AF07C /* MapView.swift */,
@@ -345,6 +348,7 @@
 				A92C4804296DADEC0066ABDF /* ContentView.swift in Sources */,
 				A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */,
 				A96C329E298A95FD006B5F30 /* MyCollectionView.swift in Sources */,
+				A9C325F7299B9B1C007AF07C /* LocationManager.swift in Sources */,
 				A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */,
 				A9C325F5299964BD007AF07C /* MapView.swift in Sources */,
 				A96C32E22991524D006B5F30 /* MyPhotoCollectionView.swift in Sources */,
@@ -516,6 +520,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save Images we need permission acess to photo Library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -549,6 +554,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save Images we need permission acess to photo Library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

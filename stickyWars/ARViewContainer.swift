@@ -13,7 +13,7 @@ import ARKit
 
 struct ARViewContainer: UIViewRepresentable {
     @ObservedObject var collection: Collection = .shared
-    @ObservedObject var sceneManager : SceneManager = .shared
+    /*@ObservedObject var sceneManager : SceneManager = .shared*/
 
    
     
@@ -46,7 +46,7 @@ struct ARViewContainer: UIViewRepresentable {
         ARVariables.arView = ARView(frame: .zero)
         
         
-        //ARVariables.arView = ARView(frame: .zero)
+        
         ARVariables.arView.addCoaching()
       
        
@@ -59,8 +59,8 @@ struct ARViewContainer: UIViewRepresentable {
         ARVariables.arView.session.run(config)
       
         
-        self.updatePersistanceAvailability(arView: ARVariables.arView)
-        self.handlePersistence(arView: ARVariables.arView)
+        /*self.updatePersistanceAvailability(arView: ARVariables.arView)
+        self.handlePersistence(arView: ARVariables.arView)*/
         
         return ARVariables.arView
     
@@ -80,7 +80,7 @@ struct ARViewContainer: UIViewRepresentable {
     }
    
     }
-class SceneManager  : ObservableObject{
+/*class SceneManager  : ObservableObject{
     
     static let shared = SceneManager()
     @Published var isPersistanceAvailable : Bool = false
@@ -142,4 +142,4 @@ extension ARViewContainer{
     
     
     
-}
+}*/

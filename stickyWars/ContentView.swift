@@ -13,7 +13,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseAuth
-import GameController
+import CoreLocation
 
 
 
@@ -26,15 +26,17 @@ struct StartView : View {
     @State var userIsLoggedIn = false
     @State private var showingAlert = false
     @ObservedObject var collection: Collection = .shared
+    @ObservedObject var gallerys: Gallerys = .shared
+    @ObservedObject var locationManager : LocationManager = .shared
+    
     @State var coordinator = Coordinator()
     // @Published var worldMapisSaved : Bool = false
     @State var showMapSheet = false
-    
     @State var showPaintSheet = false
     @State var showPhotoGalleri = false
     @State var showMyCollectionSheet = false
     @State var canvas = PKCanvasView()
-    @ObservedObject var sceneManager : SceneManager = .shared
+   /* @ObservedObject var sceneManager : SceneManager = .shared*/
     @ObservedObject var scenePersistenceHelper : ScenePersistenceHelper = .shared
     
     var body: some View{
@@ -96,7 +98,7 @@ struct StartView : View {
                             Home(canvas: $canvas)
                         }
                     
-                    /*Button(action: {
+                    Button(action: {
                         showMapSheet.toggle()
                         print("go to drawing")
                         
@@ -110,7 +112,7 @@ struct StartView : View {
                     
                         .sheet(isPresented: $showMapSheet) {
                             MapView()
-                        }*/
+                        }
                     
                     Button(action: {
                         showMyCollectionSheet.toggle()
@@ -161,8 +163,10 @@ struct StartView : View {
             
             
         }.onAppear(){
-            listenToFirestore()
+            
+            listenForImagesToFirestore()
             listenForPhotosFirebase()
+            locationManager.startLocationUpdates()
             Auth.auth().addStateDidChangeListener
             {
                 auth , user in
@@ -179,6 +183,7 @@ struct StartView : View {
     struct alertForInput : View{
         @State var showingAlert = false
         @State var nameOfWorldMap : String = "worldMap"
+        @State var descriptionOfPlacement : String = "on wall with stickers"
         var body: some View{
             
             Button("S") {showingAlert = true
@@ -190,6 +195,7 @@ struct StartView : View {
             .alert("Name", isPresented: $showingAlert, actions: {
                 TextField("your gallery", text: $nameOfWorldMap)
                     .foregroundColor(.pink)
+                TextField("description of placement", text: $descriptionOfPlacement)
                 
                 
                 Button("Save", action: {
@@ -198,6 +204,7 @@ struct StartView : View {
                     //save users email
                     
                     saveMapToFirebaseStorage(name: nameOfWorldMap)
+                 saveInfoAboutMap(descriptionOfPlacement: descriptionOfPlacement, nameOfWorldMap: nameOfWorldMap)
                     
                 })
                 Button("Cancel", role: .cancel, action: {})
@@ -210,6 +217,7 @@ struct StartView : View {
         
         
     }
+ 
     struct alertForOutput : View{
         @State var showingAlert = false
         @State var nameOfWorldMap : String = "worldMap"
@@ -257,12 +265,12 @@ struct StartView : View {
         }
     }
 }
-func listenToFirestore() {
+func listenForImagesToFirestore() {
     @ObservedObject var collection: Collection = .shared
     
     let db = Firestore.firestore()
     let user = Auth.auth().currentUser
-    db.collection("Users").document(user!.uid).collection("Images").addSnapshotListener { snapshot, err in
+    db.collection("Users").document("images").collection("Images").addSnapshotListener { snapshot, err in
         guard let snapshot = snapshot else {return}
         
         if let err = err {
@@ -276,7 +284,8 @@ func listenToFirestore() {
                 }
                 switch result  {
                 case .success(let drawing)  :
-                    collection.myCollection.append(drawing)
+                    if drawing.id == user?.uid{
+                        collection.myCollection.append(drawing)}
                 case .failure(let error) :
                     print("Error decoding item: \(error)")
                 }
@@ -284,13 +293,14 @@ func listenToFirestore() {
         }
     }
 }
+
 func listenForPhotosFirebase(){
     
     @ObservedObject var collection: Collection = .shared
     
     let db = Firestore.firestore()
     let user = Auth.auth().currentUser
-    db.collection("Users").document(user!.uid).collection("Photos").addSnapshotListener { snapshot, err in
+    db.collection("Users").document("photos").collection("Photos").addSnapshotListener { snapshot, err in
         guard let snapshot = snapshot else {return}
         
         if let err = err {
@@ -304,7 +314,9 @@ func listenForPhotosFirebase(){
                 }
                 switch result  {
                 case .success(let drawing)  :
+                    if drawing.id == user?.uid{
                     collection.myPhotoAlbum.append(drawing)
+                    }
                 case .failure(let error) :
                     print("Error decoding item: \(error)")
                 }
@@ -314,34 +326,13 @@ func listenForPhotosFirebase(){
         
     }
 }
-func sSaveWorldMap(nameOfWorldMap : String) {
-    // here i should save what images is loaded as texture for the box
-    
-    ARViewContainer.ARVariables.arView.session.getCurrentWorldMap { (worldMap, _) in
-        
-        if let map: ARWorldMap = worldMap {
-            
-            let data = try! NSKeyedArchiver.archivedData(withRootObject: map,
-                                                         requiringSecureCoding: true)
-            
-            
-            
-            //here we save it to user defaults or core
-            print("found a map")
-            
-            let savedMap = UserDefaults.standard
-            //here we chould put a textfield so user can name their worldMap
-            savedMap.set(data, forKey: nameOfWorldMap)
-            savedMap.synchronize()
-            
-            print("\(savedMap)")
-        }
-    }
-}
+
 func loadMapFromStorage(name : String){
     
     @State var imageName : String =
     "https://firebasestorage.googleapis.com:443/v0/b/streetgallery-cd734.appspot.com/o/DE71BB65-C95B-47C1-8988-327D75D1B55F.jpeg?alt=media&token=36685c18-f837-4359-b09c-7a2505c7aaef"
+    
+    var anchorList : [String] = []
    
    
    
@@ -364,25 +355,47 @@ func loadMapFromStorage(name : String){
                 
                 
                 for anchor in worldMap.anchors{
-                    //kommer ej ens in i firestore kodblock
-                    
-                 
                     
                     
-                let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
+                    anchorList.append(anchor.identifier.uuidString)
+                    print(anchorList)
                     
-                    let box = ModelEntity(mesh: mesh)
-                    box.generateCollisionShapes(recursive: true)
+                  
+                    db.collection("Anchors").document(anchor.identifier.uuidString).getDocument() {
+                        document, error in
+                        
+                        
+                        let result = Result {
+                            try document!.data(as: Anchors.self)
+                                            }
+                        switch result  {
+                                            case .success(let document)  :
+                            
+                            
+                            let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
+                                
+                                let box = ModelEntity(mesh: mesh)
+                                box.generateCollisionShapes(recursive: true)
+                                
+                                
+                            coordinator.loadPictureAsTextureSAved(box: box, view: ARViewContainer.ARVariables.arView, anchor: anchor, anchorName: document.image)
+                                
+                            
+                            config.initialWorldMap = worldMap
+                            config.planeDetection = .vertical
+                            ARViewContainer.ARVariables.arView.session.run(config)
+                                            case .failure(let error) :
+                                                print("Error decoding item: \(error)")
+                                            }
+                         
+                    }
+                        
+                        
+       
                     
-                    
-                    coordinator.loadPictureAsTextureSAved(box: box, view: ARViewContainer.ARVariables.arView, anchor: anchor, anchorName: imageName)
-                    
-                }
-                config.initialWorldMap = worldMap
-                config.planeDetection = .vertical
-                ARViewContainer.ARVariables.arView.session.run(config)
+         
             }
-            
+            }
         }else{
             
             
@@ -393,6 +406,7 @@ func loadMapFromStorage(name : String){
 
 
 struct modelPickerView : View{
+    @State var locationManager = LocationManager()
     @ObservedObject var collection: Collection = .shared
     @Binding var showPaintSheet : Bool
     @Binding var coordinator : Coordinator
@@ -471,6 +485,42 @@ struct modelPickerView : View{
     
     
 }
+func saveInfoAboutMap( descriptionOfPlacement : String , nameOfWorldMap : String){
+    @ObservedObject var locationManager : LocationManager = .shared
+    let db = Firestore.firestore()
+    @ObservedObject var gallerys: Gallerys = .shared
+    //create GalleryObject
+    //users current location
+    let usersEmail = Auth.auth().currentUser?.email ?? "generic email adress"
+    
+    
+   
+    locationManager.startLocationUpdates()
+    
+    print(locationManager.location?.latitude)
+    
+    
+    print(gallerys.myGalleries)
+    
+    
+    let map = Gallery(worldMap: nameOfWorldMap, longitude: locationManager.location?.longitude ??  18.0371209, latitude: locationManager.location?.latitude ??     59.34222, descriptionOfPlacement: descriptionOfPlacement, userName: usersEmail)
+
+    do {
+        _ = try db.collection("WorldMaps").addDocument(from: map)
+    } catch {
+        print("Error saving to DB")
+    }
+
+    
+   
+    
+    
+    
+    
+    
+    
+    
+}
 func saveMapToFirebaseStorage(name : String ){
     
     ARViewContainer.ARVariables.arView.session.getCurrentWorldMap { (worldMap, _) in
@@ -528,8 +578,8 @@ func saveToFirebaseStorage(image : UIImage) {
                 let db = Firestore.firestore()
                 let urlString = url.absoluteString
                 let user = Auth.auth().currentUser
-                let drawing = Drawing(url: urlString, name: "photo")
-                try? db.collection("Users").document(user!.uid).collection("Photos").addDocument(from : drawing)
+                let drawing = Drawing(url: urlString, name: "photo", id: user!.uid)
+                try? db.collection("Users").document("photos").collection("Photos").addDocument(from : drawing)
                 
             }
         }
@@ -540,54 +590,9 @@ func saveToFirebaseStorage(image : UIImage) {
 }
 
 
-struct saveAndLoadButtons : View{
-    @ObservedObject var sceneManager : SceneManager = .shared
-    @ObservedObject var scenePersistenceHelper : ScenePersistenceHelper = .shared
-    
-    var body: some View{
-        
-        Button(action: {print("you pressed save")
-            
-            
-            
-            
-            
-        }){
-            Image(systemName: "icloud.and.arrow.up")
-            
-        }
-        
-        
-        Button(action: {print("you pressed load")
-            
-            
-            
-        }){
-            
-            Image(systemName: "icloud.and.arrow.down")
-        }
-        
-        
-        
-        
-        
-    }
-}
-struct controllButtonBar : View{
-    
-    var body: some View{
-        
-        HStack(alignment: .center){
-            
-            saveAndLoadButtons()
-            
-        }.frame(maxWidth:500)
-            .padding(30)
-            .background(Color.red.opacity(0.25))
-    }
-    
-    
-}
+
+
+
 
 
 
