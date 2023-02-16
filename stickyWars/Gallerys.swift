@@ -6,8 +6,10 @@
 //
 
 import Foundation
-class Gallerys{
-    
-    var myGalleries : [Gallery] = []
+import UIKit
+class Gallerys : ObservableObject, Identifiable{
+    static let shared = Gallerys()
+    @Published var selectedGallery : Gallery = Gallery(worldMap: "Sten", longitude: 37.3323341, latitude: -122.0312186, descriptionOfPlacement: "Somewhere wierd", userName: "Josefin")
+    @Published var myGalleries : [Gallery] = []
     
 }

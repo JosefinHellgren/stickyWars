@@ -78,8 +78,8 @@ class ImagePickerCoordinator : NSObject , UIImagePickerControllerDelegate, UINav
                         let db = Firestore.firestore()
                         let user = Auth.auth().currentUser
                         let urlString = url.absoluteString
-                        let drawing = Drawing(url: urlString, name: "picture")
-                        try? db.collection("Users").document(user!.uid).collection("Images").addDocument(from : drawing)
+                        let drawing = Drawing(url: urlString, name: "picture", id: user!.uid)
+                        try? db.collection("Users").document("images").collection("Images").addDocument(from : drawing)
                        
                     }
                 }

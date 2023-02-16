@@ -24,7 +24,7 @@ struct LoginView: View {
             
             
             RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .fill(Color.orange.opacity(0.40))
+                    .fill(Color.orange.opacity(0.90))
                     .shadow(radius: 20)
                     .padding(45.0)
                     .background(LinearGradient(colors: [Color.white , Color.white.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
