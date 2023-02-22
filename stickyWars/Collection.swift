@@ -27,38 +27,7 @@ class Collection : ObservableObject {
     
 
 }
-/*func createDemoData(){
-    //add images and photos to the collections
-    
-   
-}*/
 
-//is this used?
-/*func listenToFirestore(collection : Collection) {
-   // guard let uid = Auth.auth().currentUser?.uid else {return}
-    let db = Firestore.firestore()
-        db.collection("Images").addSnapshotListener { snapshot, err in
-            guard let snapshot = snapshot else {return}
-            
-            if let err = err {
-                print("Error getting document \(err)")
-            } else {
-                collection.myCollection.removeAll()
-                for document in snapshot.documents {
-
-                    let result = Result {
-                        try document.data(as: Drawing.self)
-                    }
-                    switch result  {
-                    case .success(let drawing)  :
-                        collection.myCollection.append(drawing)
-                    case .failure(let error) :
-                        print("Error decoding item: \(error)")
-                    }
-                }
-            }
-        }
-    }*/
 
 
 
