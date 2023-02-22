@@ -12,10 +12,11 @@ import FirebaseAuth
 
 struct userInfoSwiftUIView: View {
     
-    var list :[String] = ["viewfinder","viewfinder","viewfinder","viewfinder","viewfinder","viewfinder","viewfinder", "viewfinder"]
+  
    
     @ObservedObject var viewModel = ProfileViewModel()
     var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 40), count: 2)
+    
     
     var body: some View {
         ZStack(alignment: .top){
@@ -41,17 +42,17 @@ struct userInfoSwiftUIView: View {
              }
             Spacer()
             Spacer()
-            Text("Art you collected:")
+            
             ScrollView(.vertical, showsIndicators: false){
                 LazyVGrid(columns: gridItemLayout, spacing: 15){
            
                 
              
           
-                    ForEach(0..<list.count,id: \.self){
+                    ForEach(0..<(viewModel.user?.score ?? 6),id: \.self){
                         index in
                         
-                        Image(systemName: list[index])
+                        Image(systemName: "medal")
                             .resizable()
                             .frame(width: 100, height: 100)
                             
