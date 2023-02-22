@@ -16,10 +16,6 @@ import FirebaseAuth
 import CoreLocation
 
 
-
-
-
-
 struct StartView : View {
     
     
@@ -28,17 +24,15 @@ struct StartView : View {
     @ObservedObject var collection: Collection = .shared
     @ObservedObject var gallerys: Gallerys = .shared
     @ObservedObject var locationManager : LocationManager = .shared
-    
     @State var coordinator = Coordinator()
-    // @Published var worldMapisSaved : Bool = false
     @State var showMapSheet = false
     @State var showPaintSheet = false
     @State var showPhotoGalleri = false
     @State var showMyCollectionSheet = false
+    @State var showUserInfoSheet = false
     @State var canvas = PKCanvasView()
-   /* @ObservedObject var sceneManager : SceneManager = .shared*/
-    @ObservedObject var scenePersistenceHelper : ScenePersistenceHelper = .shared
-    
+    @State private var isDarkMode = false
+    @State private var showScore = false
     var body: some View{
         if userIsLoggedIn{
             content
@@ -49,102 +43,84 @@ struct StartView : View {
     }
     
     
-    
+   
     var content: some View{
-        
-        
-        
-        
         
         ZStack(alignment: .bottom){
             
             
             VStack(){
-                HStack{
-                    alertForInput()
-                    alertForOutput()
-                    
-                    
-                    Button(action: {
-                        showingAlert = true
-                    }){
-                        Image(systemName: "eye")
-                    }
-                    .foregroundColor(.black)
-                    .frame(width: 60.0, height: 60.0, alignment: .center)
-                    
-                    
-                    .alert("ARt är en app där du kan skapa dina konstverk och sedan placera ut dom i den virtuella verkligheten med hjälp av Augumented reality", isPresented: $showingAlert) {
-                        Button("OK", role: .cancel) { }
-                    }
-                    
-                    Button(action: {signOutUser()}){
-                        Image(systemName: "person.fill.xmark")
-                    }.foregroundColor(.black)
-                        .frame(width: 55, height: 55, alignment: .center)
-                    Button(action: {
-                        showPaintSheet.toggle()
-                        print("go to drawing")
-                        
-                    }){
-                        //change to brush picture
-                        Image(systemName: "paintbrush")
-                            .cornerRadius(20.0)
-                    }.foregroundColor(.black)
-                        .frame(width: 50, height: 50, alignment: .center)
-                    
-                    
-                        .sheet(isPresented: $showPaintSheet) {
-                            Home(canvas: $canvas)
-                        }
-                    
-                    Button(action: {
-                        showMapSheet.toggle()
-                        print("go to drawing")
-                        
-                    }){
-                        //change to brush picture
-                        Image(systemName: "map")
-                            .cornerRadius(20.0)
-                    }.foregroundColor(.black)
-                        .frame(width: 50, height: 50, alignment: .center)
-                    
-                    
-                        .sheet(isPresented: $showMapSheet) {
-                            MapView()
-                        }
-                    
-                    Button(action: {
-                        showMyCollectionSheet.toggle()
-                        print("go to collection")
-                        
-                    }){
-                        //change to brush picture
-                        Image(systemName: "backpack")
-                    }.foregroundColor(.black)
-                        .frame(width: 50.0, height: 50.0, alignment: .center)
-                    
-                    
-                        .sheet(isPresented: $showMyCollectionSheet) {
-                            MyCollectionView()
-                        }
-                    Button(action: {
-                        showPhotoGalleri.toggle()
-                    }){
-                        Image(systemName: "photo")
-                            
-                    }.sheet(isPresented: $showPhotoGalleri) {
-                        MyPhotoCollectionView()
-                    }
-                    .foregroundColor(.black)
-                    .frame(width: 50, height: 50, alignment: .center)
-                    
-                }.background(Color.yellow.opacity(0.200))
-                    .cornerRadius(30)
                 
-                .padding()
-                //Text("\(getEmal())").foregroundColor(.pink)
-                //controllButtonBar()
+                HStack{
+                    VStack{
+                    HStack{
+                   
+                    topButton(sheetBool: $showUserInfoSheet, imageName: "person", action: {showUserInfoSheet.toggle()})
+                        .sheet(isPresented: $showUserInfoSheet, content: { userInfoSwiftUIView()})
+                    
+                    topButton(sheetBool: $showPaintSheet, imageName: "paintbrush", action:{ showPaintSheet.toggle()})
+                        .sheet(isPresented: $showPaintSheet, content: {drawingView(canvas: $canvas)})
+                    
+                    topButton(sheetBool: $showMapSheet, imageName: "map", action: {showMapSheet.toggle()})
+                        .sheet(isPresented: $showMapSheet, content: {MapView()})
+                        topButton(sheetBool: $showMyCollectionSheet, imageName: "backpack", action: {showMyCollectionSheet.toggle()})
+                            .sheet(isPresented: $showMyCollectionSheet, content: {MyCollectionView()})
+                        
+                        topButton(sheetBool: $showPhotoGalleri, imageName: "photo", action: {showPhotoGalleri.toggle()})
+                            .sheet(isPresented: $showPhotoGalleri, content: {MyPhotoCollectionView()})
+                        Button(action: {signOutUser()}){
+                            Image(systemName: "person.fill.xmark")
+                        }
+                        .foregroundColor(.black)
+                        .frame(width: 50, height: 50, alignment: .center)
+                        Toggle("", isOn: $isDarkMode)
+               
+                    }
+                    .background(Color.yellow.opacity(0.200))
+                        .cornerRadius(30)
+                       
+                        HStack{
+                           
+                            alertForInput()
+                            alertForOutput(coordinator: $coordinator)
+                            Button(action: {
+                                coordinator.removeAllAnchors()
+                                
+                            })
+                            {
+                                Image(systemName: "trash")
+                                    .resizable()
+                                    .frame(width: 50.0, height: 50.0, alignment: .center)
+                                    .foregroundColor(Color.white)
+                                    
+                                
+                            }.buttonStyle(.bordered)
+                            
+                   
+               
+                    
+                            
+                                           
+                        }
+                            .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                    .stroke(.black, lineWidth: 1)
+                                    
+                                   
+                                )
+                }
+                }
+                //.padding()
+                
+                
+                
+                
+                
+               
+                
+                
+                
+                
                 ARViewContainer()
                     .edgesIgnoringSafeArea(.all)
                     .cornerRadius(30)
@@ -155,18 +131,25 @@ struct StartView : View {
                 
             }.background(LinearGradient(colors: [Color.orange.opacity(0.4), Color.yellow.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
             .background(LinearGradient(colors: [Color.orange.opacity(0.5), Color.yellow], startPoint: .topLeading, endPoint: .bottomTrailing))
-            
-            
+            .preferredColorScheme(isDarkMode ? .dark : .light)
+           
             
             
             modelPickerView(showPaintSheet: $showPaintSheet, coordinator: $coordinator, canvas: $canvas)
             
             
-        }.onAppear(){
+        
+           
+           
+                
+        }
+        
+        .onAppear(){
             
             listenForImagesToFirestore()
             listenForPhotosFirebase()
             locationManager.startLocationUpdates()
+            
             Auth.auth().addStateDidChangeListener
             {
                 auth , user in
@@ -175,96 +158,138 @@ struct StartView : View {
                 }
             }
         }
+       
+           
         
     }
+ 
+ 
+    func signOutUser(){
+           
+            
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+               userIsLoggedIn = false
+            } catch let signOutError as NSError {
+                print("Error signing out: %@", signOutError)
+            }
+        }
+}
+
     
-    
-    
+struct topButton : View{
+    @Binding var sheetBool : Bool
+    let imageName : String
+    var action : () -> Void
+    var body: some View{
+       
+        
+        Button(action: action
+        ){
+           
+            Image(systemName: imageName)
+                .cornerRadius(20.0)
+        }.foregroundColor(.black)
+            .frame(width: 50, height: 50, alignment: .center)
+        
+        
+           
+    }
+}
+  
     struct alertForInput : View{
+        @ObservedObject var gallerys: Gallerys = .shared
         @State var showingAlert = false
-        @State var nameOfWorldMap : String = "worldMap"
-        @State var descriptionOfPlacement : String = "on wall with stickers"
+        @State var nameOfWorldMap : String = ""
+        @State var descriptionOfPlacement : String = ""
         var body: some View{
             
-            Button("S") {showingAlert = true
+            Button{showingAlert = true
                 
                 
                 print("pressed save")
+            } label: { VStack{Image(systemName: "mappin.and.ellipse")
+            
+                    .resizable()
+                    .frame(width: 50.0, height: 50.0, alignment: .center)
+                    .foregroundColor(Color.white)
+                    
+              
+            }
+                
             }
             
-            .alert("Name", isPresented: $showingAlert, actions: {
-                TextField("your gallery", text: $nameOfWorldMap)
-                    .foregroundColor(.pink)
+            .alert("Save Artwork", isPresented: $showingAlert, actions: {
+                TextField("your artwork", text: $nameOfWorldMap)
+                    .foregroundColor(.black)
                 TextField("description of placement", text: $descriptionOfPlacement)
                 
                 
                 Button("Save", action: {
                     
-                    //saveusercurrentLocation
-                    //save users email
+                 
                     
-                    saveMapToFirebaseStorage(name: nameOfWorldMap)
+                    gallerys.saveMapToFirebaseStorage(name: nameOfWorldMap)
                  saveInfoAboutMap(descriptionOfPlacement: descriptionOfPlacement, nameOfWorldMap: nameOfWorldMap)
                     
                 })
                 Button("Cancel", role: .cancel, action: {})
             }, message: {
-                Text("Please enter a name for your Gallery")
-            })
-            .buttonStyle(.bordered)
+                Text("Choose a name for the artwork you placed at this location")
+            }).buttonStyle(.bordered)
+            
             
         }
         
         
     }
+
  
     struct alertForOutput : View{
         @State var showingAlert = false
-        @State var nameOfWorldMap : String = "worldMap"
+        @Binding var coordinator : Coordinator
+        @State var nameOfWorldMap : String = ""
         var body: some View{
             
-            Button("L") {showingAlert = true
-                
+            Button{showingAlert = true
+                coordinator.removeAllAnchors()
                 
                 print("pressed load")
+            } label: { VStack{
+                Image(systemName: "binoculars.fill")
+                    .resizable()
+                    .frame(width: 50.0, height: 50.0, alignment: .center)
+                    .foregroundColor(Color.white)
+                
+            }
+                
             }
             
-            .alert("Name", isPresented: $showingAlert, actions: {
-                TextField("your gallery", text: $nameOfWorldMap)
-                    .foregroundColor(.pink)
+            .alert("Load Artwork", isPresented: $showingAlert, actions: {
+                TextField("Artwork name", text: $nameOfWorldMap)
+                    .foregroundColor(.black)
                 
                 
                 Button("Load", action: {
-                    //this button should be placed at a pin at the map and the choosen pin should be tagged with the url to that worldMap
-                    //FOREACH PIN ON MAP: take name on pin and load that worldMap in the ARVIEW
+          
                     
                     loadMapFromStorage(name: nameOfWorldMap)
                     
                 })
                 Button("Cancel", role: .cancel, action: {})
             }, message: {
-                Text("What Map do you want to see?")
-            })
-            .buttonStyle(.bordered)
+                Text("Write the name of the artwork you wanna load, be sure to be at the same location and read the description of where the artist placed the art.")
+            }).buttonStyle(.bordered)
+           
             
         }
-        
-        
     }
-    
-    
-    
-    func signOutUser(){
         
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            userIsLoggedIn = false
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
-    }
-}
+        
+    
+
+
 func listenForImagesToFirestore() {
     @ObservedObject var collection: Collection = .shared
     
@@ -378,7 +403,7 @@ func loadMapFromStorage(name : String){
                                 box.generateCollisionShapes(recursive: true)
                                 
                                 
-                            coordinator.loadPictureAsTextureSAved(box: box, view: ARViewContainer.ARVariables.arView, anchor: anchor, anchorName: document.image)
+                            coordinator.loadPictureAsTextureOnMap(box: box, view: ARViewContainer.ARVariables.arView, anchor: anchor, anchorName: document.image)
                                 
                             
                             config.initialWorldMap = worldMap
@@ -404,24 +429,16 @@ func loadMapFromStorage(name : String){
     
 }
 
-
-struct modelPickerView : View{
-    @State var locationManager = LocationManager()
-    @ObservedObject var collection: Collection = .shared
-    @Binding var showPaintSheet : Bool
-    @Binding var coordinator : Coordinator
-    @Binding var canvas : PKCanvasView
-    
-    var body: some View{VStack{
+struct snapShot : View{
+    var body: some View{
         
         Button {
             
-            // Placeholder: take a snapshot
             ARViewContainer.ARVariables.arView.snapshot(saveToHDR: false) { (image) in
                 
-                // Compress the image
+               
                 let compressedImage = UIImage(data: (image?.pngData())!)
-                // Save in the photo album¨
+                
                 saveToFirebaseStorage(image: compressedImage!)
                 
                 UIImageWriteToSavedPhotosAlbum(compressedImage!, nil, nil, nil)
@@ -435,9 +452,21 @@ struct modelPickerView : View{
                 .cornerRadius(30)
                 .padding()
         }
+    }
+}
+struct modelPickerView : View{
+    @State var locationManager = LocationManager()
+    @ObservedObject var collection: Collection = .shared
+    @Binding var showPaintSheet : Bool
+    @Binding var coordinator : Coordinator
+    @Binding var canvas : PKCanvasView
+    
+    var body: some View{VStack{
+        
+        
+        snapShot()
+        
         ScrollView(.horizontal, showsIndicators: false){
-            
-            
             
             HStack(){
                 ForEach(0..<collection.myCollection.count,id: \.self){
@@ -473,10 +502,7 @@ struct modelPickerView : View{
                 
             }.background(Color.white.opacity(0.25))
                 .padding()
-            
-            
-            
-        }
+            }
         
     }
         
@@ -512,16 +538,9 @@ func saveInfoAboutMap( descriptionOfPlacement : String , nameOfWorldMap : String
     }
 
     
-   
-    
-    
-    
-    
-    
-    
-    
 }
-func saveMapToFirebaseStorage(name : String ){
+    
+/*func saveMapToFirebaseStorage(name : String ){
     
     ARViewContainer.ARVariables.arView.session.getCurrentWorldMap { (worldMap, _) in
         
@@ -547,7 +566,7 @@ func saveMapToFirebaseStorage(name : String ){
             }
         }
     }
-}
+}*/
 func saveToFirebaseStorage(image : UIImage) {
     
     guard image != nil else {return
@@ -592,6 +611,7 @@ func saveToFirebaseStorage(image : UIImage) {
 
 
 
+    
 
 
 

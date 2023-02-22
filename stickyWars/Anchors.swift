@@ -18,19 +18,7 @@ struct Anchors : Encodable, Decodable, Identifiable{
     
     var identifier : UUID
     var image : String
+    var points : Int = 2
     
 }
-func fetchData(){
-    let db = Firestore.firestore()
-    
-  db.collection("Anchors").addSnapshotListener { (querySnapshot, error) in
-    guard let documents = querySnapshot?.documents else {
-      print("No documents")
-      return
-    }
-      
-      let anchor = documents as? Anchors
-      
-      anchor?.image
-  }
-}
+

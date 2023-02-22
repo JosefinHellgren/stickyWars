@@ -6,7 +6,15 @@
 //
 
 import Foundation
+import UIKit
+import ARKit
+import FirebaseStorage
+import FirebaseFirestore
+
+
 class Gallery : Encodable, Identifiable, Decodable{
+    
+  
     
     
     let id = UUID()
@@ -15,6 +23,7 @@ class Gallery : Encodable, Identifiable, Decodable{
     var longitude : Double
     var descriptonOfPlacement: String
     var userName : String
+    
     
     
     
@@ -28,8 +37,6 @@ class Gallery : Encodable, Identifiable, Decodable{
         
         
     }
-    
-    
     
     
 }
