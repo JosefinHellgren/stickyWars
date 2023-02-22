@@ -14,28 +14,32 @@ struct MyCollectionView: View {
     @State var mySelectedImage = String()
     @State var showBigPic : Bool = false
     
-    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 15), count: 3)
+    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 40), count: 2)
     var body: some View {
+        ZStack{
+           
+             
         VStack{
             
-            Button(action: {print("upload picture or take picture")
-                //show the imagePicker
+            Button(action: {print("upload picture")
                 showPicker = true
                 
             }){
                 Image(systemName: "plus.circle.fill")
                     .resizable()
-                    .foregroundColor(Color.pink.opacity(0.40))
+                    .foregroundColor(Color.white)
                     
                    
-                    .frame(width: 80, height: 80, alignment: .center)
+                    .frame(width: 70, height: 70, alignment: .center)
                 
             }
             .sheet(isPresented: $showPicker){
-                //imagePicket
+               
                 ImagePicker(selectedImage: $selectedImage, showPicker : $showPicker)
             }
-            
+            Text("DRAWINGS")
+                .foregroundColor(Color.white)
+                .font(.largeTitle)
         
             ScrollView(.vertical, showsIndicators: false){
                 LazyVGrid(columns: gridItemLayout, spacing: 15){
@@ -64,7 +68,7 @@ struct MyCollectionView: View {
                             } placeholder: {
                                 ProgressView()
                             }
-                            .frame(width: 150, height: 150)
+                            .frame(width: 200, height: 200)
                             
                                 
                                 }.sheet(isPresented: $showBigPic) {
@@ -75,23 +79,24 @@ struct MyCollectionView: View {
                                 
                                 .cornerRadius(20.0)
                                 .border(Color.green.opacity(0.60), width: collection.selectedDrawing == collection.myCollection[index].url ? 5.0 : 0.0 )
+                                
                             
                         }
         }
                                                                     }
                         
               
-        }.background(Color.green.opacity(0.50))
+        }
     }
+        .background(LinearGradient(colors: [Color.purple.opacity(0.5), Color.yellow.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(colors: [Color.pink.opacity(0.5), Color.yellow.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(colors: [Color.white.opacity(0.6), Color.white.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        
+        .edgesIgnoringSafeArea(.all)
     
 }
+}
 
-/*struct MyCollectionView_Previews: PreviewProvider {
-  
-    static var previews: some View {
-        MyCollectionView()
-    }
-}*/
 
 struct imagePicker : View{
     @State var isPickerShowing = false

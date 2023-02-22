@@ -9,12 +9,18 @@ import SwiftUI
 
 struct MyPhotoCollectionView: View {
     @ObservedObject var collection: Collection = .shared
-    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 15), count: 3)
+    var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 30), count: 2)
+    
     @State var mySelectedPhoto = String()
     @State var showBigPic : Bool = false
     var body: some View {
-        
+        ZStack{
+            
+            
+            
         VStack{
+           
+               
         ScrollView(.vertical, showsIndicators: false){
             LazyVGrid(columns: gridItemLayout, spacing: 4){
        
@@ -39,7 +45,7 @@ struct MyPhotoCollectionView: View {
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(width: 150, height: 150)
+                        .frame(width: 200, height: 200)
                         
                             
                             }.sheet(isPresented: $showBigPic) {
@@ -51,19 +57,20 @@ struct MyPhotoCollectionView: View {
                             .cornerRadius(20.0)
                             .border(Color.green.opacity(0.60), width: collection.selectedPhoto == collection.myPhotoAlbum[index].url ? 5.0 : 0.0 )
                             
+                          
                                 
-                                
-                        .padding()
-                                .buttonStyle(BorderedButtonStyle())
-                                .shadow(radius: 15)
-                                .cornerRadius(20.0)
-                                .border(Color.green.opacity(0.60), width: 0.0 )
+                    
                             
             }.padding(15)
             }
                                                                     }
         }
-        .background(Color.blue.opacity(0.30))
+    }
+        .background(LinearGradient(colors: [Color.blue.opacity(0.3), Color.green.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(colors: [Color.yellow.opacity(0.4), Color.blue.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(colors: [Color.white.opacity(0.4), Color.yellow.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        
+        .edgesIgnoringSafeArea(.all)
               
         }
     }

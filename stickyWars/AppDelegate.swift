@@ -12,18 +12,19 @@ import Firebase
 
 
 
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
    
     var window: UIWindow?
     
-  
+   
     
    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        
-        
+        FirebaseApp.configure()
         
         // Create the SwiftUI view that provides the window contents.
         let firstView = StartView()
@@ -35,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.rootViewController = UIHostingController(rootView: firstView)
         self.window = window
         window.makeKeyAndVisible()
-       FirebaseApp.configure()
+       
         
         
         return true

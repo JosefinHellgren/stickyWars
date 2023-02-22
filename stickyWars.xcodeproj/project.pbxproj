@@ -22,12 +22,14 @@
 		A92C4815296DADEC0066ABDF /* stickyWarsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92C4814296DADEC0066ABDF /* stickyWarsTests.swift */; };
 		A92C481F296DADEC0066ABDF /* stickyWarsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92C481E296DADEC0066ABDF /* stickyWarsUITests.swift */; };
 		A92C4821296DADEC0066ABDF /* stickyWarsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92C4820296DADEC0066ABDF /* stickyWarsUITestsLaunchTests.swift */; };
+		A931249529A3C4B800262A82 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A931249429A3C4B800262A82 /* User.swift */; };
+		A931249929A3CBB400262A82 /* userInfoSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A931249829A3CBB400262A82 /* userInfoSwiftUIView.swift */; };
+		A931249B29A4B03C00262A82 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A931249A29A4B03C00262A82 /* ProfileViewModel.swift */; };
 		A936A01F29928D15002C2BA2 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A01E29928D15002C2BA2 /* Gallery.swift */; };
 		A936A02129928D83002C2BA2 /* Gallerys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A02029928D83002C2BA2 /* Gallerys.swift */; };
 		A936A0232992A222002C2BA2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A936A0222992A222002C2BA2 /* Launch Screen.storyboard */; };
 		A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A0252994F0BB002C2BA2 /* Anchors.swift */; };
 		A96C324D2981719B006B5F30 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C324C2981719B006B5F30 /* ARViewContainer.swift */; };
-		A96C324F298181C0006B5F30 /* ScenePersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C324E298181C0006B5F30 /* ScenePersistenceHelper.swift */; };
 		A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C329629828E2D006B5F30 /* arViewExtension.swift */; };
 		A96C32992982B121006B5F30 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C32982982B121006B5F30 /* Drawing.swift */; };
 		A96C329C29893A75006B5F30 /* MultipeerSession in Frameworks */ = {isa = PBXBuildFile; productRef = A96C329B29893A75006B5F30 /* MultipeerSession */; };
@@ -72,13 +74,14 @@
 		A92C481A296DADEC0066ABDF /* stickyWarsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = stickyWarsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A92C481E296DADEC0066ABDF /* stickyWarsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stickyWarsUITests.swift; sourceTree = "<group>"; };
 		A92C4820296DADEC0066ABDF /* stickyWarsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stickyWarsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A931249429A3C4B800262A82 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A931249829A3CBB400262A82 /* userInfoSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userInfoSwiftUIView.swift; sourceTree = "<group>"; };
+		A931249A29A4B03C00262A82 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A936A01E29928D15002C2BA2 /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
 		A936A02029928D83002C2BA2 /* Gallerys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallerys.swift; sourceTree = "<group>"; };
 		A936A0222992A222002C2BA2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A936A0242992A574002C2BA2 /* cute-paint-brush-character-flat-cartoon-vector-template-design-illustration_570764-2572.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cute-paint-brush-character-flat-cartoon-vector-template-design-illustration_570764-2572.webp"; sourceTree = "<group>"; };
 		A936A0252994F0BB002C2BA2 /* Anchors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchors.swift; sourceTree = "<group>"; };
 		A96C324C2981719B006B5F30 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
-		A96C324E298181C0006B5F30 /* ScenePersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePersistenceHelper.swift; sourceTree = "<group>"; };
 		A96C329629828E2D006B5F30 /* arViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = arViewExtension.swift; sourceTree = "<group>"; };
 		A96C32982982B121006B5F30 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		A96C329D298A95FD006B5F30 /* MyCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionView.swift; sourceTree = "<group>"; };
@@ -147,15 +150,17 @@
 				A90E9ED829801FF9000A6CB7 /* Collection.swift */,
 				A96C32982982B121006B5F30 /* Drawing.swift */,
 				A9C325F6299B9B1C007AF07C /* LocationManager.swift */,
+				A931249A29A4B03C00262A82 /* ProfileViewModel.swift */,
+				A931249829A3CBB400262A82 /* userInfoSwiftUIView.swift */,
 				A96C329D298A95FD006B5F30 /* MyCollectionView.swift */,
 				A936A01E29928D15002C2BA2 /* Gallery.swift */,
 				A9C325F4299964BD007AF07C /* MapView.swift */,
+				A931249429A3C4B800262A82 /* User.swift */,
 				A936A0252994F0BB002C2BA2 /* Anchors.swift */,
 				A96C32DF298BDC96006B5F30 /* SignUpView.swift */,
 				A96C32E12991524D006B5F30 /* MyPhotoCollectionView.swift */,
 				A936A02029928D83002C2BA2 /* Gallerys.swift */,
 				A96C329629828E2D006B5F30 /* arViewExtension.swift */,
-				A96C324E298181C0006B5F30 /* ScenePersistenceHelper.swift */,
 				A96C324C2981719B006B5F30 /* ARViewContainer.swift */,
 				A90E9E1B2979703B000A6CB7 /* Coordinator.swift */,
 				A936A0222992A222002C2BA2 /* Launch Screen.storyboard */,
@@ -163,7 +168,6 @@
 				A90E9E19297961A8000A6CB7 /* drawingView.swift */,
 				A92C4803296DADEC0066ABDF /* ContentView.swift */,
 				A92C4807296DADEC0066ABDF /* Assets.xcassets */,
-				A936A0242992A574002C2BA2 /* cute-paint-brush-character-flat-cartoon-vector-template-design-illustration_570764-2572.webp */,
 				A90E9ECD29800FBD000A6CB7 /* GoogleService-Info.plist */,
 				A92C4809296DADEC0066ABDF /* Preview Content */,
 			);
@@ -346,16 +350,18 @@
 				A936A01F29928D15002C2BA2 /* Gallery.swift in Sources */,
 				A96C324D2981719B006B5F30 /* ARViewContainer.swift in Sources */,
 				A92C4804296DADEC0066ABDF /* ContentView.swift in Sources */,
+				A931249929A3CBB400262A82 /* userInfoSwiftUIView.swift in Sources */,
 				A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */,
 				A96C329E298A95FD006B5F30 /* MyCollectionView.swift in Sources */,
 				A9C325F7299B9B1C007AF07C /* LocationManager.swift in Sources */,
 				A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */,
+				A931249529A3C4B800262A82 /* User.swift in Sources */,
 				A9C325F5299964BD007AF07C /* MapView.swift in Sources */,
 				A96C32E22991524D006B5F30 /* MyPhotoCollectionView.swift in Sources */,
+				A931249B29A4B03C00262A82 /* ProfileViewModel.swift in Sources */,
 				A96C32E0298BDC97006B5F30 /* SignUpView.swift in Sources */,
 				A90E9E1C2979703B000A6CB7 /* Coordinator.swift in Sources */,
 				A96C32A0298AA6BF006B5F30 /* ImagePicker.swift in Sources */,
-				A96C324F298181C0006B5F30 /* ScenePersistenceHelper.swift in Sources */,
 				A90E9E1A297961A8000A6CB7 /* drawingView.swift in Sources */,
 				A92C4802296DADEC0066ABDF /* AppDelegate.swift in Sources */,
 			);

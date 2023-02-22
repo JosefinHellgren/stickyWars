@@ -17,25 +17,24 @@ class Collection : ObservableObject {
  
     static let shared = Collection()
     
-    //demo content images
      @Published var myCollection : [Drawing] = []
-
+ 
     
     @Published var myPhotoAlbum : [Drawing] = []
-    @Published var selectedDrawing : String = "https://firebasestorage.googleapis.com/v0/b/streetgallery-cd734.appspot.com/o/images1E7FFC1C-FF5A-4D66-BC3F-2E0BD06CCD3B.jpeg?alt=media&token=0861bebb-c9e5-4cec-bdad-2f73d6fc753b"
+    @Published var selectedDrawing : String = "https://firebasestorage.googleapis.com:443/v0/b/streetgallery-cd734.appspot.com/o/Bj%C3%B6rn0AC0B1F9-430D-490E-BB59-A071E25E3325.jpeg?alt=media&token=449857e1-5a42-41fe-b2fc-baccfc571569"
     @Published var selectedPhoto : String = ""
     
     
 
 }
-func createDemoData(){
+/*func createDemoData(){
     //add images and photos to the collections
     
    
-}
+}*/
 
 //is this used?
-func listenToFirestore(collection : Collection) {
+/*func listenToFirestore(collection : Collection) {
    // guard let uid = Auth.auth().currentUser?.uid else {return}
     let db = Firestore.firestore()
         db.collection("Images").addSnapshotListener { snapshot, err in
@@ -59,7 +58,7 @@ func listenToFirestore(collection : Collection) {
                 }
             }
         }
-    }
+    }*/
 
 
 
