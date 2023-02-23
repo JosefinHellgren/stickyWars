@@ -91,7 +91,7 @@ struct StartView : View {
                                 Image(systemName: "trash")
                                     .resizable()
                                     .frame(width: 50.0, height: 50.0, alignment: .center)
-                                    .foregroundColor(Color.white)
+                                    .foregroundColor(Color.purple)
                                     
                                 
                             }.buttonStyle(.bordered)
@@ -213,7 +213,7 @@ struct topButton : View{
             
                     .resizable()
                     .frame(width: 50.0, height: 50.0, alignment: .center)
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color.purple)
                     
               
             }
@@ -253,14 +253,14 @@ struct topButton : View{
         var body: some View{
             
             Button{showingAlert = true
-                coordinator.removeAllAnchors()
+                
                 
                 print("pressed load")
             } label: { VStack{
                 Image(systemName: "binoculars.fill")
                     .resizable()
                     .frame(width: 50.0, height: 50.0, alignment: .center)
-                    .foregroundColor(Color.white)
+                    .foregroundColor(Color.purple)
                 
             }
                 
