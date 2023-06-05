@@ -29,7 +29,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     weak var view : ARView?
     
     @objc func handleTap(recognizer : UITapGestureRecognizer){
-        @ObservedObject var collection: Collection = .shared
+        @ObservedObject var collection: ArtworkCollection = .shared
        
         guard let view = self.view else {return }
         
@@ -65,7 +65,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
   
     func saveAnchorsToFirestore (anchorID : UUID, selectedDrawing : String){
         
-        let anchor = Anchors(identifier: anchorID, image: selectedDrawing)
+        let anchor = Anchor(identifier: anchorID, image: selectedDrawing)
         let db = Firestore.firestore()
         try? db.collection("Anchors").document(anchorID.uuidString).setData(from: anchor)
         
@@ -73,7 +73,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     
     
     func loadPictureAsTexture(box : ModelEntity, view: ARView, anchor : ARAnchor){
-        @ObservedObject var collection: Collection = .shared
+        @ObservedObject var collection: ArtworkCollection = .shared
         
         let urlTest = collection.selectedDrawing
     
@@ -116,7 +116,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     
     
     func loadPictureAsTextureOnMap(box : ModelEntity, view: ARView, anchor : ARAnchor, anchorName : String){
-        @ObservedObject var collection: Collection = .shared
+        @ObservedObject var collection: ArtworkCollection = .shared
         
         let urlTest = anchorName
 

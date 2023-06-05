@@ -12,10 +12,10 @@ import ARKit
 
 
 struct ARViewContainer: UIViewRepresentable {
-    @ObservedObject var collection: Collection = .shared
+    @ObservedObject var collection: ArtworkCollection = .shared
  
     func makeUIView(context: Context) -> ARView {
-        @ObservedObject var collection: Collection = .shared
+        @ObservedObject var collection: ArtworkCollection = .shared
   
         
         

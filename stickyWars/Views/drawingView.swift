@@ -18,7 +18,7 @@ import FirebaseAuth
 struct drawingView: View {
     @State var toolPicker = PKToolPicker()
     
-    @ObservedObject var collection: Collection = .shared
+    @ObservedObject var collection: ArtworkCollection = .shared
     @State var showBigPic : Bool = false
     @State var selectedImage = String()
     @State private var presentAlert = false
@@ -60,7 +60,8 @@ struct alertView : View{
     @Binding var nameOfDrawing : String
     @Binding var canvas : PKCanvasView
     var body: some View{
-        Button("Save Image") {presentAlert = true
+        Button("Save Image") {
+            presentAlert = true
             
             
             print("pressed save")
@@ -118,7 +119,7 @@ struct alertView : View{
 
     
     struct DrawingView : UIViewRepresentable{
-        @ObservedObject var collection: Collection = .shared
+        @ObservedObject var collection: ArtworkCollection = .shared
        @Binding var toolPicker : PKToolPicker
         @Binding var canvas : PKCanvasView
         

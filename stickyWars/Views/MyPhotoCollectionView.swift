@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyPhotoCollectionView: View {
-    @ObservedObject var collection: Collection = .shared
+    @ObservedObject var collection: ArtworkCollection = .shared
     var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 30), count: 2)
     
     @State var mySelectedPhoto = String()

@@ -14,7 +14,7 @@
 		A90E9ED32980184F000A6CB7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A90E9ED22980184F000A6CB7 /* FirebaseFirestore */; };
 		A90E9ED52980184F000A6CB7 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A90E9ED42980184F000A6CB7 /* FirebaseFirestoreSwift */; };
 		A90E9ED72980184F000A6CB7 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A90E9ED62980184F000A6CB7 /* FirebaseStorage */; };
-		A90E9ED929801FF9000A6CB7 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90E9ED829801FF9000A6CB7 /* Collection.swift */; };
+		A90E9ED929801FF9000A6CB7 /* ArtworkCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90E9ED829801FF9000A6CB7 /* ArtworkCollection.swift */; };
 		A92C4802296DADEC0066ABDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92C4801296DADEC0066ABDF /* AppDelegate.swift */; };
 		A92C4804296DADEC0066ABDF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92C4803296DADEC0066ABDF /* ContentView.swift */; };
 		A92C4808296DADEC0066ABDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A92C4807296DADEC0066ABDF /* Assets.xcassets */; };
@@ -28,10 +28,10 @@
 		A936A01F29928D15002C2BA2 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A01E29928D15002C2BA2 /* Gallery.swift */; };
 		A936A02129928D83002C2BA2 /* Gallerys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A02029928D83002C2BA2 /* Gallerys.swift */; };
 		A936A0232992A222002C2BA2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A936A0222992A222002C2BA2 /* Launch Screen.storyboard */; };
-		A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A0252994F0BB002C2BA2 /* Anchors.swift */; };
+		A936A0262994F0BB002C2BA2 /* Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A936A0252994F0BB002C2BA2 /* Anchor.swift */; };
 		A96C324D2981719B006B5F30 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C324C2981719B006B5F30 /* ARViewContainer.swift */; };
 		A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C329629828E2D006B5F30 /* arViewExtension.swift */; };
-		A96C32992982B121006B5F30 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C32982982B121006B5F30 /* Drawing.swift */; };
+		A96C32992982B121006B5F30 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C32982982B121006B5F30 /* Artwork.swift */; };
 		A96C329C29893A75006B5F30 /* MultipeerSession in Frameworks */ = {isa = PBXBuildFile; productRef = A96C329B29893A75006B5F30 /* MultipeerSession */; };
 		A96C329E298A95FD006B5F30 /* MyCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C329D298A95FD006B5F30 /* MyCollectionView.swift */; };
 		A96C32A0298AA6BF006B5F30 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96C329F298AA6BF006B5F30 /* ImagePicker.swift */; };
@@ -64,7 +64,7 @@
 		A90E9E19297961A8000A6CB7 /* drawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = drawingView.swift; sourceTree = "<group>"; };
 		A90E9E1B2979703B000A6CB7 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		A90E9ECD29800FBD000A6CB7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		A90E9ED829801FF9000A6CB7 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		A90E9ED829801FF9000A6CB7 /* ArtworkCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCollection.swift; sourceTree = "<group>"; };
 		A92C47FE296DADEC0066ABDF /* stickyWars.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = stickyWars.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A92C4801296DADEC0066ABDF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A92C4803296DADEC0066ABDF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,10 +81,10 @@
 		A936A01E29928D15002C2BA2 /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
 		A936A02029928D83002C2BA2 /* Gallerys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallerys.swift; sourceTree = "<group>"; };
 		A936A0222992A222002C2BA2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		A936A0252994F0BB002C2BA2 /* Anchors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchors.swift; sourceTree = "<group>"; };
+		A936A0252994F0BB002C2BA2 /* Anchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchor.swift; sourceTree = "<group>"; };
 		A96C324C2981719B006B5F30 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
 		A96C329629828E2D006B5F30 /* arViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = arViewExtension.swift; sourceTree = "<group>"; };
-		A96C32982982B121006B5F30 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
+		A96C32982982B121006B5F30 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
 		A96C329D298A95FD006B5F30 /* MyCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionView.swift; sourceTree = "<group>"; };
 		A96C329F298AA6BF006B5F30 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		A96C32DF298BDC96006B5F30 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -207,11 +207,11 @@
 		C32E662B2A2DBC3500CF1C51 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A96C32982982B121006B5F30 /* Drawing.swift */,
+				A96C32982982B121006B5F30 /* Artwork.swift */,
 				A931249A29A4B03C00262A82 /* UserModel.swift */,
-				A90E9ED829801FF9000A6CB7 /* Collection.swift */,
+				A90E9ED829801FF9000A6CB7 /* ArtworkCollection.swift */,
 				A931249429A3C4B800262A82 /* User.swift */,
-				A936A0252994F0BB002C2BA2 /* Anchors.swift */,
+				A936A0252994F0BB002C2BA2 /* Anchor.swift */,
 				A936A01E29928D15002C2BA2 /* Gallery.swift */,
 				A936A02029928D83002C2BA2 /* Gallerys.swift */,
 			);
@@ -371,14 +371,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96C32992982B121006B5F30 /* Drawing.swift in Sources */,
-				A90E9ED929801FF9000A6CB7 /* Collection.swift in Sources */,
+				A96C32992982B121006B5F30 /* Artwork.swift in Sources */,
+				A90E9ED929801FF9000A6CB7 /* ArtworkCollection.swift in Sources */,
 				A936A02129928D83002C2BA2 /* Gallerys.swift in Sources */,
 				A936A01F29928D15002C2BA2 /* Gallery.swift in Sources */,
 				A96C324D2981719B006B5F30 /* ARViewContainer.swift in Sources */,
 				A92C4804296DADEC0066ABDF /* ContentView.swift in Sources */,
 				A931249929A3CBB400262A82 /* userInfoSwiftUIView.swift in Sources */,
-				A936A0262994F0BB002C2BA2 /* Anchors.swift in Sources */,
+				A936A0262994F0BB002C2BA2 /* Anchor.swift in Sources */,
 				A96C329E298A95FD006B5F30 /* MyCollectionView.swift in Sources */,
 				A9C325F7299B9B1C007AF07C /* LocationManager.swift in Sources */,
 				A96C329729828E2D006B5F30 /* arViewExtension.swift in Sources */,

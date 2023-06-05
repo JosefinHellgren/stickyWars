@@ -10,15 +10,11 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 import Firebase
 
-struct Anchors : Encodable, Decodable, Identifiable{
+struct Anchor : Encodable, Decodable, Identifiable {
     
     @DocumentID var id: String?
-  
-    
-    
     var identifier : UUID
     var image : String
     var points : Int = 2
-    
 }
 
