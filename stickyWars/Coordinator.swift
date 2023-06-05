@@ -18,7 +18,8 @@ import FirebaseAuth
 
 class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     static let shared = Coordinator()
-    @ObservedObject var viewModel = ProfileViewModel()
+    @ObservedObject var user = UserModel()
+    
    
    
   
@@ -30,27 +31,11 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     @objc func handleTap(recognizer : UITapGestureRecognizer){
         @ObservedObject var collection: Collection = .shared
        
-        
-        
         guard let view = self.view else {return }
         
         let tapLocation = recognizer.location(in: view)
-        if let entity = view.entity(at: tapLocation) as? ModelEntity{
-            print("you tapped a model")
-            
-         
-                let score = 1
-            
-            print(score)
-            viewModel.updateScore(score1: score)
-                
-            //CurrentUser    + entity.points
-                  //entitys user + entity.points + 1
-                
-                
-                
-                
-            
+        if view.entity(at: tapLocation) is ModelEntity{
+            user.updateScore()
         }
         
         let results =   view.raycast(from: tapLocation, allowing: .estimatedPlane, alignment: .vertical)

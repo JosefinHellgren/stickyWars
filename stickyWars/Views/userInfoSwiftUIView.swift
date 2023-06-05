@@ -14,7 +14,7 @@ struct userInfoSwiftUIView: View {
     
   
    
-    @ObservedObject var viewModel = ProfileViewModel()
+    @ObservedObject var viewModel = UserModel()
     var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 40), count: 2)
     
     
