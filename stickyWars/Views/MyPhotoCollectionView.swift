@@ -49,7 +49,7 @@ struct MyPhotoCollectionView: View {
                         
                             
                             }.sheet(isPresented: $showBigPic) {
-                                BigPic(image: $mySelectedPhoto)
+                                BigDrawingPreview(image: $mySelectedPhoto)
                             }
                             
                             .buttonStyle(PlainButtonStyle())
@@ -76,8 +76,8 @@ struct MyPhotoCollectionView: View {
     }
 
 
-struct MyPhotoCollectionView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyPhotoCollectionView()
-    }
-}
+//struct MyPhotoCollectionView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MyPhotoCollectionView()
+//    }
+//}

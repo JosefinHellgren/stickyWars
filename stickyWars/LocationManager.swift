@@ -8,7 +8,9 @@
 import Foundation
 import CoreLocation
 class LocationManager : NSObject, CLLocationManagerDelegate, ObservableObject {
+    
     static let shared = LocationManager()
+    
     var location : CLLocationCoordinate2D?
     let manager = CLLocationManager()
     override init() {
@@ -21,6 +23,5 @@ class LocationManager : NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.first?.coordinate
-        print(" plats uppdaterat \(location)")
     }
 }

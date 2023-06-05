@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A90E9E1A297961A8000A6CB7 /* drawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90E9E19297961A8000A6CB7 /* drawingView.swift */; };
+		A90E9E1A297961A8000A6CB7 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90E9E19297961A8000A6CB7 /* DrawingView.swift */; };
 		A90E9E1C2979703B000A6CB7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90E9E1B2979703B000A6CB7 /* Coordinator.swift */; };
 		A90E9ECE29800FBD000A6CB7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A90E9ECD29800FBD000A6CB7 /* GoogleService-Info.plist */; };
 		A90E9ED12980184F000A6CB7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A90E9ED02980184F000A6CB7 /* FirebaseAuth */; };
@@ -41,6 +41,7 @@
 		A9C325F5299964BD007AF07C /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C325F4299964BD007AF07C /* MapView.swift */; };
 		A9C325F7299B9B1C007AF07C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C325F6299B9B1C007AF07C /* LocationManager.swift */; };
 		C32E662E2A2DC60200CF1C51 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32E662D2A2DC60200CF1C51 /* LoginView.swift */; };
+		C32E66302A2E149600CF1C51 /* Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32E662F2A2E149600CF1C51 /* Anchors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +62,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A90E9E19297961A8000A6CB7 /* drawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = drawingView.swift; sourceTree = "<group>"; };
+		A90E9E19297961A8000A6CB7 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		A90E9E1B2979703B000A6CB7 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		A90E9ECD29800FBD000A6CB7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A90E9ED829801FF9000A6CB7 /* ArtworkCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCollection.swift; sourceTree = "<group>"; };
@@ -93,6 +94,7 @@
 		A9C325F4299964BD007AF07C /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		A9C325F6299B9B1C007AF07C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		C32E662D2A2DC60200CF1C51 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		C32E662F2A2E149600CF1C51 /* Anchors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				A96C329D298A95FD006B5F30 /* MyCollectionView.swift */,
-				A90E9E19297961A8000A6CB7 /* drawingView.swift */,
+				A90E9E19297961A8000A6CB7 /* DrawingView.swift */,
 				A9C325F4299964BD007AF07C /* MapView.swift */,
 				A92C4803296DADEC0066ABDF /* ContentView.swift */,
 				A96C32DF298BDC96006B5F30 /* SignUpView.swift */,
@@ -214,6 +216,7 @@
 				A936A0252994F0BB002C2BA2 /* Anchor.swift */,
 				A936A01E29928D15002C2BA2 /* Gallery.swift */,
 				A936A02029928D83002C2BA2 /* Gallerys.swift */,
+				C32E662F2A2E149600CF1C51 /* Anchors.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -390,7 +393,8 @@
 				A96C32E0298BDC97006B5F30 /* SignUpView.swift in Sources */,
 				A90E9E1C2979703B000A6CB7 /* Coordinator.swift in Sources */,
 				A96C32A0298AA6BF006B5F30 /* ImagePicker.swift in Sources */,
-				A90E9E1A297961A8000A6CB7 /* drawingView.swift in Sources */,
+				A90E9E1A297961A8000A6CB7 /* DrawingView.swift in Sources */,
+				C32E66302A2E149600CF1C51 /* Anchors.swift in Sources */,
 				A92C4802296DADEC0066ABDF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
