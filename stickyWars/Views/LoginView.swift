@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct LoginView: View {
     @State var email : String = ""
     @State var password : String = ""
-    @Binding var userIsLoggedIn : Bool
-    var userModel = UserModel()
-    
-    
+    @ObservedObject var userModel: UserModel = .shared
     @State var signUpViewShow : Bool = false
+    
+    
     var body: some View {
         
         ZStack{
@@ -26,7 +24,7 @@ struct LoginView: View {
                 Image("globform")
                     .resizable()
                     .scaledToFit()
-
+                
                 TextField("email", text: $email)
                     .padding(15.0)
                     .background(RoundedRectangle(cornerRadius: 4.0, style: .continuous)
@@ -35,7 +33,7 @@ struct LoginView: View {
                         .background(.white)
                     )
                     .padding()
-            
+                
                 SecureField("password", text: $password)
                     .padding(15.0)
                     .background(RoundedRectangle(cornerRadius: 4.0, style: .continuous)
@@ -46,7 +44,7 @@ struct LoginView: View {
                     .padding()
                 
                 Button(action: {
-                    logIn(email: email, password: password)}){
+                    userModel.logIn(email: email, password: password)}){
                         Text("Login")
                     }.background(RoundedRectangle(cornerRadius: 5.0,style: .continuous) .fill(LinearGradient(colors: [.white,.white], startPoint: .top, endPoint: .bottomTrailing)).frame(width: 70, height: 30, alignment: .center))
                     .foregroundColor(.black)
@@ -59,32 +57,12 @@ struct LoginView: View {
                         Text("Sign Up")
                     }
                     .foregroundColor(.white)
-                    
                     .padding()
                     .sheet(isPresented: $signUpViewShow, content: {
-                        SignUpView(userIsLoggedIn: $userIsLoggedIn)
+                        SignUpView()
                     })
                 }
             }
         }
     }
-    
-    func logIn (email : String , password : String) {
-        
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            
-            if error != nil {
-                print(error?.localizedDescription ?? "")
-            } else {
-                userModel.fetchUserData()
-                userIsLoggedIn.toggle()
-            }
-        }
-    }
 }
-
-//struct LoginView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginView()
-//    }
-//}

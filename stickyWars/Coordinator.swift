@@ -20,17 +20,14 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     static let shared = Coordinator()
     @ObservedObject var user = UserModel()
     
-   
-   
-  
     var arView : ARView?
     
-
+    
     weak var view : ARView?
     
     @objc func handleTap(recognizer : UITapGestureRecognizer){
         @ObservedObject var collection: ArtworkCollection = .shared
-       
+        
         guard let view = self.view else {return }
         
         let tapLocation = recognizer.location(in: view)
@@ -47,7 +44,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
             let anchor = ARAnchor(name: "plane anchor" , transform: results.worldTransform)
             view.session.add(anchor: anchor)
             
-           
+            
             let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
             
             let box = ModelEntity(mesh: mesh)
@@ -61,14 +58,13 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
         }
         
     }
- 
-  
+    
+    
     func saveAnchorsToFirestore (anchorID : UUID, selectedDrawing : String){
         
         let anchor = Anchor(identifier: anchorID, image: selectedDrawing)
         let db = Firestore.firestore()
         try? db.collection("Anchors").document(anchorID.uuidString).setData(from: anchor)
-        
     }
     
     
@@ -76,29 +72,22 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
         @ObservedObject var collection: ArtworkCollection = .shared
         
         let urlTest = collection.selectedDrawing
-    
-        
-   
         guard let imageURL = URL(string: urlTest) else { return }
         
-        let session = URLSession(configuration: .default).dataTask(with: imageURL) {
-            imageData, response, error in
+        let session = URLSession(configuration: .default).dataTask(with: imageURL) { imageData, response, error in
             
             if let data = imageData {
                 
                 DispatchQueue.main.async {
-                    
                     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                     let filePath = documentsDirectory.appendingPathComponent("sky.png")
                     try? data.write(to: filePath)
                     let texture = try? TextureResource.load(contentsOf: filePath)
                     
                     if let texture = texture {
-                        
                         var material = UnlitMaterial()
                         material.color = .init(tint: .white, texture : .init(texture))
                         box.model?.materials = [material]
-                        
                         
                         let anchorentety = AnchorEntity(anchor: anchor)
                         anchorentety.addChild(box)
@@ -112,23 +101,21 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
         }
         session.resume()
     }
- 
+    
     
     
     func loadPictureAsTextureOnMap(box : ModelEntity, view: ARView, anchor : ARAnchor, anchorName : String){
         @ObservedObject var collection: ArtworkCollection = .shared
         
         let urlTest = anchorName
-
+        
         guard let imageURL = URL(string: urlTest) else { return }
         
-        let session = URLSession(configuration: .default).dataTask(with: imageURL) {
-            imageData, response, error in
+        let session = URLSession(configuration: .default).dataTask(with: imageURL) { imageData, response, error in
             
             if let data = imageData {
                 
                 DispatchQueue.main.async {
-                    
                     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                     let filePath = documentsDirectory.appendingPathComponent("sky.png")
                     try? data.write(to: filePath)
@@ -139,7 +126,6 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
                         var material = UnlitMaterial()
                         material.color = .init(tint: .white, texture : .init(texture))
                         box.model?.materials = [material]
-                        
                         
                         let anchorentety = AnchorEntity(anchor: anchor)
                         anchorentety.addChild(box)
@@ -152,27 +138,19 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
         }
         session.resume()
     }
+    
     func removeAllAnchors(){
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [.vertical, .horizontal]
         config.environmentTexturing = .automatic
-        
-        
         config.frameSemantics.insert(.personSegmentationWithDepth)
-       
         
         if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh){
             config.sceneReconstruction = .mesh
-            
         }
-        
         ARViewContainer.ARVariables.arView.session.run(config, options: [.removeExistingAnchors, .resetTracking])
-        
-        
-        
     }
-
-    }
+}
 
 
 

@@ -8,52 +8,43 @@
 import SwiftUI
 import PencilKit
 import UIKit
-import Firebase
-import FirebaseStorage
-import FirebaseFirestoreSwift
-import FirebaseFirestore
-import FirebaseAuth
 
 
 struct DrawingView: View {
     @State var toolPicker = PKToolPicker()
-    
-    @ObservedObject var collection: ArtworkCollection = .shared
     @State var showBigPic : Bool = false
     @State var selectedImage = String()
     @State private var presentAlert = false
     @State private var nameOfDrawing : String = ""
     @Binding var canvas : PKCanvasView
+    @ObservedObject var collection: ArtworkCollection = .shared
     
     var body: some View {
+        
         ZStack{
             VStack{
-                
                 HStack{
                     Button(action: {print("clean canvas")
                         canvas.drawing = PKDrawing()
                     }){
                         Image(systemName: "washer")
                     }
-                    alertView(presentAlert: $presentAlert, nameOfDrawing: $nameOfDrawing, canvas: $canvas)
+                    SaveDrawingAlertView(presentAlert: $presentAlert, nameOfDrawing: $nameOfDrawing, canvas: $canvas)
                 }
-                
                 PKCanvasViewWrapper(toolPicker: $toolPicker, canvas: $canvas)
             }
         }
     }
-
 }
 
-
-
-struct alertView : View{
+struct SaveDrawingAlertView : View{
     @Binding var presentAlert : Bool
     @Binding var nameOfDrawing : String
     @Binding var canvas : PKCanvasView
     @ObservedObject var collection: ArtworkCollection = .shared
     
-    var body: some View{
+    var body: some View {
+        
         Button("Save Image") {
             presentAlert = true
         }
@@ -83,7 +74,6 @@ struct PKCanvasViewWrapper : UIViewRepresentable{
     @Binding var toolPicker : PKToolPicker
     @Binding var canvas : PKCanvasView
     
-    
     func makeUIView(context: Context) -> PKCanvasView {
         canvas.drawingPolicy = .anyInput
         toolPicker.setVisible(true, forFirstResponder: canvas)
@@ -92,6 +82,7 @@ struct PKCanvasViewWrapper : UIViewRepresentable{
         
         return canvas
     }
+    
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
         //
     }

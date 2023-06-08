@@ -7,7 +7,9 @@
 
 import SwiftUI
 // here we have a grid page with all your creations and also a upload button for own pictures and in that function also enable camera function.
-struct MyCollectionView: View {
+
+struct MyArtworkCollectionView: View {
+    
     @ObservedObject var collection: ArtworkCollection = .shared
     @State var showPicker = false
     @State var selectedImage : UIImage?
@@ -71,30 +73,10 @@ struct MyCollectionView: View {
         .background(LinearGradient(colors: [Color.pink.opacity(0.5), Color.yellow.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
         .background(LinearGradient(colors: [Color.white.opacity(0.6), Color.white.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing))
         .edgesIgnoringSafeArea(.all)
-        
     }
 }
 
-
-struct imagePicker : View{
-    @State var isPickerShowing = false
-    @State var selectedImage : UIImage?
-    
-    var body: some View{
-        ZStack{
-            if selectedImage != nil{
-                Image(uiImage: selectedImage!)
-                    .resizable()
-                    .frame(width: 200, height: 200, alignment: .center)
-            }
-            Button {
-                isPickerShowing = true
-            } label:{ Text("Select a photo")}
-        }
-    }
-}
-
-struct BigDrawingPreview : View{
+struct BigDrawingPreview : View {
     @Binding var image : String
     
     var body: some View{

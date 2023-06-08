@@ -37,8 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         window.makeKeyAndVisible()
        
-        
-        
         return true
     }
 

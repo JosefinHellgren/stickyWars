@@ -46,19 +46,13 @@ class ImagePickerCoordinator : NSObject , UIImagePickerControllerDelegate, UINav
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         //run this code when user has selected image
-        print("Image selected")
-       // guard let uid = Auth.auth().currentUser?.uid else {return}
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-            
-            guard image != nil else {return
-            }
+
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             
             let storageRef = Storage.storage().reference()
             let imageData = image.jpegData(compressionQuality: 0.8)
             guard imageData != nil else{return}
-            
-        
-            
+
             let path = "\(UUID().uuidString).jpeg"
             
             
@@ -66,34 +60,26 @@ class ImagePickerCoordinator : NSObject , UIImagePickerControllerDelegate, UINav
             
             let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
                 
-                if error == nil && metadata != nil{
-                    
-                  
-                }
                 fileRef.downloadURL {
                     url, error in
-
+                    
                     if let url = url {
-                      
+                        
                         let db = Firestore.firestore()
                         let user = Auth.auth().currentUser
                         let urlString = url.absoluteString
                         let drawing = Artwork(url: urlString, name: "picture", id: user!.uid)
-                        try? db.collection("Users").document("images").collection("Images").addDocument(from : drawing)
-                       
+                        do {
+                            try db.collection("Users").document("images").collection("Images").addDocument(from : drawing)
+                        }  catch {
+                            print("fail to save drawing")
+                        }
                     }
                 }
-                
             }
             uploadTask.resume()
-            
         }
-        
         parent.showPicker = false
-        
-        
-        
-        
     }
     
     

@@ -1,26 +1,21 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  stickyWars
 //
-//  Created by josefin hellgren on 2023-01-10.
+//  Created by Elin Simonsson on 2023-06-08.
 //
 
 import SwiftUI
 import RealityKit
 import ARKit
 import PencilKit
-import Firebase
-import FirebaseFirestore
-import FirebaseStorage
-import FirebaseAuth
 import CoreLocation
 
-
-struct StartView : View {
+struct MainView: View {
     
-    @State var userIsLoggedIn = false
     @State private var showingAlert = false
     @ObservedObject var collection: ArtworkCollection = .shared
+    @ObservedObject var userModel: UserModel = .shared
     @ObservedObject var gallerys: Gallerys = .shared
     @ObservedObject var locationManager : LocationManager = .shared
     @State var coordinator = Coordinator()
@@ -32,17 +27,7 @@ struct StartView : View {
     @State var canvas = PKCanvasView()
     @State private var isDarkMode = false
     @State private var showScore = false
-    
-    
     var body: some View {
-        if userIsLoggedIn{
-            content
-        } else {
-            LoginView(userIsLoggedIn: $userIsLoggedIn)
-        }
-    }
-    
-    var content: some View {
         
         ZStack(alignment: .bottom){
             VStack(){
@@ -50,17 +35,17 @@ struct StartView : View {
                     VStack{
                         HStack{
                             TopTapButton(sheetBool: $showUserInfoSheet, imageName: "person", action: {showUserInfoSheet.toggle()})
-                                .sheet(isPresented: $showUserInfoSheet, content: { userInfoSwiftUIView()})
+                                .sheet(isPresented: $showUserInfoSheet, content: { UserInfoView()})
                             TopTapButton(sheetBool: $showPaintSheet, imageName: "paintbrush", action:{ showPaintSheet.toggle()})
                                 .sheet(isPresented: $showPaintSheet, content: {DrawingView(canvas: $canvas)})
                             TopTapButton(sheetBool: $showMapSheet, imageName: "map", action: {showMapSheet.toggle()})
                                 .sheet(isPresented: $showMapSheet, content: {MapView()})
                             TopTapButton(sheetBool: $showMyCollectionSheet, imageName: "backpack", action: {showMyCollectionSheet.toggle()})
-                                .sheet(isPresented: $showMyCollectionSheet, content: {MyCollectionView()})
+                                .sheet(isPresented: $showMyCollectionSheet, content: {MyArtworkCollectionView()})
                             TopTapButton(sheetBool: $showPhotoGalleri, imageName: "photo", action: {showPhotoGalleri.toggle()})
                                 .sheet(isPresented: $showPhotoGalleri, content: {MyPhotoCollectionView()})
                             
-                            Button(action: {signOutUser()}){
+                            Button(action: {userModel.signOutUser()}){
                                 Image(systemName: "person.fill.xmark")
                             }
                             .foregroundColor(.black)
@@ -99,36 +84,18 @@ struct StartView : View {
                     .background(LinearGradient(colors: [Color.yellow, Color.white.opacity(0.25)], startPoint: .topLeading, endPoint: .bottomTrailing) )
                     .background(LinearGradient(colors: [Color.yellow.opacity(0.4), Color.pink.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
                     .background(Color.white.opacity(0.2))
-                
             }
+            
             .background(LinearGradient(colors: [Color.orange.opacity(0.4), Color.yellow.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
             .background(LinearGradient(colors: [Color.orange.opacity(0.5), Color.yellow], startPoint: .topLeading, endPoint: .bottomTrailing))
             .preferredColorScheme(isDarkMode ? .dark : .light)
             
-            
-            modelPickerView(showPaintSheet: $showPaintSheet, coordinator: $coordinator, canvas: $canvas)
+            ArtworkPickerScrollView(showPaintSheet: $showPaintSheet, coordinator: $coordinator, canvas: $canvas)
         }
-        .onAppear(){
+        .onAppear() {
             collection.listenForImagesToFirestore()
             collection.listenForPhotosFirebase()
             locationManager.startLocationUpdates()
-            
-            Auth.auth().addStateDidChangeListener { auth, user in
-                if user != nil {
-                    userIsLoggedIn = true
-                }
-            }
-        }
-    }
-    
-    func signOutUser(){
-        let firebaseAuth = Auth.auth()
-        
-        do {
-            try firebaseAuth.signOut()
-            userIsLoggedIn = false
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
         }
     }
 }
@@ -154,7 +121,6 @@ struct ArtworkSaveAlertView : View {
     @ObservedObject var gallerys: Gallerys = .shared
     @ObservedObject var locationManager : LocationManager = .shared
     @ObservedObject var userModel = UserModel()
-    let anchors = Anchors()
     @State var showingAlert = false
     @State var nameOfWorldMap : String = ""
     @State var descriptionOfPlacement : String = ""
@@ -176,15 +142,8 @@ struct ArtworkSaveAlertView : View {
             TextField("description of placement", text: $descriptionOfPlacement)
             
             Button("Save", action: {
-                let userEmail = userModel.user?.email
-                let location = locationManager.location
-                gallerys.saveMapToFirebaseStorage(name: nameOfWorldMap)
-                
-//                if let location, let userEmail {
-////                    saveInfoAboutMap(descriptionOfPlacement: descriptionOfPlacement, nameOfWorldMap: nameOfWorldMap, coordinate: location)
-//                    anchors.saveInfoAboutMap(userEmail: userEmail, descriptionOfPlacement: descriptionOfPlacement, nameOfWorldMap: nameOfWorldMap, coordinate: location)
-//                }
-                saveInfoAboutMap(descriptionOfPlacement: descriptionOfPlacement, nameOfWorldMap: nameOfWorldMap)
+                gallerys.saveARWorldMapToFirebaseStorage(name: nameOfWorldMap)
+                gallerys.saveInfoAboutMapToFirestore(descriptionOfPlacement: descriptionOfPlacement, nameOfWorldMap: nameOfWorldMap)
             })
             Button("Cancel", role: .cancel, action: {})
         }, message: {
@@ -195,9 +154,10 @@ struct ArtworkSaveAlertView : View {
 
 struct ArtworkLoaderAlertButton : View {
     @Binding var coordinator : Coordinator
+    
     @State var showingAlert = false
     @State var nameOfWorldMap : String = ""
-    var anchors = Anchors()
+    
     
     var body: some View {
         
@@ -215,7 +175,8 @@ struct ArtworkLoaderAlertButton : View {
             TextField("Artwork name", text: $nameOfWorldMap)
                 .foregroundColor(.black)
             Button("Load", action: {
-                anchors.loadAnchorFromStorage(name: nameOfWorldMap, coordinator: coordinator)
+                Anchor.loadAnchorFromStorage(name: nameOfWorldMap)
+                
             })
             Button("Cancel", role: .cancel, action: {})
         }, message: {
@@ -230,20 +191,20 @@ struct Snapshot: View {
     
     var body: some View {
         Button {
-           
-                ARViewContainer.ARVariables.arView.snapshot(saveToHDR: false) { (image) in
-                    guard let snapshotImage = image else {
-                        return
-                    }
-                    
-                    if let compressedImageData = snapshotImage.pngData() {
-                        let compressedImage = UIImage(data: compressedImageData)
-                        if let compressedImage = compressedImage {
-                            collection.savePhotoToFirebaseStorage(image: compressedImage)
-                            UIImageWriteToSavedPhotosAlbum(compressedImage, nil, nil, nil)
-                        }
+            
+            ARViewContainer.ARVariables.arView.snapshot(saveToHDR: false) { (image) in
+                guard let snapshotImage = image else {
+                    return
+                }
+                
+                if let compressedImageData = snapshotImage.pngData() {
+                    let compressedImage = UIImage(data: compressedImageData)
+                    if let compressedImage = compressedImage {
+                        collection.savePhotoToFirebaseStorage(image: compressedImage)
+                        UIImageWriteToSavedPhotosAlbum(compressedImage, nil, nil, nil)
                     }
                 }
+            }
         } label: {
             Image(systemName: "camera")
                 .frame(width: 60, height: 60)
@@ -255,19 +216,17 @@ struct Snapshot: View {
     }
 }
 
-struct modelPickerView : View {
+struct ArtworkPickerScrollView : View {
     @State var locationManager = LocationManager()
     @ObservedObject var collection: ArtworkCollection = .shared
     @Binding var showPaintSheet : Bool
     @Binding var coordinator : Coordinator
     @Binding var canvas : PKCanvasView
-    let db = Firestore.firestore()
     
     var body: some View{
         VStack{
             Snapshot()
             ScrollView(.horizontal, showsIndicators: false) {
-                
                 HStack(){
                     ForEach(0..<collection.myDrawings.count,id: \.self) {
                         index in
@@ -300,32 +259,5 @@ struct modelPickerView : View {
     }
 }
 
-func saveInfoAboutMap( descriptionOfPlacement : String , nameOfWorldMap : String){
-    @ObservedObject var locationManager : LocationManager = .shared
-    let db = Firestore.firestore()
-    @ObservedObject var gallerys: Gallerys = .shared
-    //create GalleryObject
-    //users current location
-    let usersEmail = Auth.auth().currentUser?.email ?? "generic email adress"
-    
-    
-   
-    locationManager.startLocationUpdates()
-    
-    print(locationManager.location?.latitude)
-    
-    
-    print(gallerys.myGalleries)
-    
-    
-    let map = Gallery(worldMap: nameOfWorldMap, longitude: locationManager.location?.longitude ??  18.0371209, latitude: locationManager.location?.latitude ??     59.34222, descriptionOfPlacement: descriptionOfPlacement, userName: usersEmail)
 
-    do {
-        _ = try db.collection("WorldMaps").addDocument(from: map)
-    } catch {
-        print("Error saving to DB")
-    }
-
-    
-}
 

@@ -11,6 +11,8 @@ import Firebase
 import FirebaseStorage
 import FirebaseFirestore
 import FirebaseAuth
+import ARKit
+import RealityKit
 
 class ArtworkCollection : ObservableObject {
     
@@ -106,7 +108,7 @@ class ArtworkCollection : ObservableObject {
         uploadTask.resume()
     }
     
-    func saveImageToFirebaseStorage(nameOfDrawing : String, image : UIImage){
+    func saveImageToFirebaseStorage(nameOfDrawing : String, image : UIImage) {
     
         let storageRef = Storage.storage().reference()
         let imageData = image.jpegData(compressionQuality: 0.8)
@@ -116,10 +118,6 @@ class ArtworkCollection : ObservableObject {
     
         let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
     
-            if error == nil && metadata != nil{
-    
-    
-            }
             fileRef.downloadURL {
                 url, error in
     
@@ -129,8 +127,12 @@ class ArtworkCollection : ObservableObject {
                     let user = Auth.auth().currentUser
                     let urlString = url.absoluteString
                     let drawing = Artwork(url: urlString, name: nameOfDrawing, id: user!.uid)
-                    try? db.collection("Users").document("images").collection("Images").addDocument(from : drawing)
-    
+                    
+                    do {
+                        try db.collection("Users").document("images").collection("Images").addDocument(from : drawing)
+                    } catch {
+                        print("fail to save drawing to storage")
+                    }
                 }
             }
     

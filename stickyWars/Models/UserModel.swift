@@ -12,7 +12,10 @@ import FirebaseAuth
 
 
 class UserModel: ObservableObject {
+    
+    static let shared = UserModel()
     @Published var user: User?
+    @Published var userIsLoggedIn = false
     
     private var db = Firestore.firestore()
     
@@ -34,7 +37,6 @@ class UserModel: ObservableObject {
         }
     }
     
-    
     func updateScore() {
         guard let currentUser = Auth.auth().currentUser?.uid else {
             return
@@ -48,6 +50,50 @@ class UserModel: ObservableObject {
                 }
             }
         }
+    }
+    
+        func signUp(email: String, password: String, nickName : String){
+    
+            Auth.auth().createUser(withEmail: email, password: password) {authresult, error in
+    
+                if (authresult?.user.uid != nil){
+                    self.userIsLoggedIn.toggle()
+                    let currentUser = Auth.auth().currentUser?.uid ?? ""
+    
+                    let user = User(name: nickName, email: email, score: 0)
+                    try? self.db.collection("UserInfo").document(currentUser).setData(from: user)
+                } else {
+                    print("error with creating user")
+                }
+            }
+        }
+    
+    func logIn (email : String , password : String) {
+        
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            } else {
+                self.fetchUserData()
+                self.userIsLoggedIn.toggle()
+            }
+        }
+    }
+    
+    func signOutUser() {
+        let firebaseAuth = Auth.auth()
+        
+        do {
+            try firebaseAuth.signOut()
+            userIsLoggedIn = false
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
+    
+    func toogleUserIsLoggedIn() {
+        userIsLoggedIn.toggle()
     }
 }
 

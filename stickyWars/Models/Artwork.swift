@@ -26,44 +26,5 @@ class Artwork : Encodable, Decodable, ObservableObject {
     }
 }
 
-//func saveToFirebaseStorage(nameOfDrawing : String,image : UIImage){
-//    
-//    guard image != nil else {return
-//    }
-//    
-//    let storageRef = Storage.storage().reference()
-//    let imageData = image.jpegData(compressionQuality: 0.8)
-//    guard imageData != nil else{return}
-//    
-//
-//    
-//    let path = "\(nameOfDrawing)\(UUID().uuidString).jpeg"
-//    
-//    
-//    let fileRef = storageRef.child(path)
-//    
-//    let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
-//        
-//        if error == nil && metadata != nil{
-//            
-//          
-//        }
-//        fileRef.downloadURL {
-//            url, error in
-//
-//            if let url = url {
-//              
-//                let db = Firestore.firestore()
-//                let user = Auth.auth().currentUser
-//                let urlString = url.absoluteString
-//                let drawing = Artwork(url: urlString, name: nameOfDrawing, id: user!.uid)
-//                try? db.collection("Users").document("images").collection("Images").addDocument(from : drawing)
-//               
-//            }
-//        }
-//        
-//    }
-//    uploadTask.resume()
-//}
 
 
