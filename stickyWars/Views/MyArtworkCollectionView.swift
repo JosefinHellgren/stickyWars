@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MyArtworkCollectionView: View {
     
-    @ObservedObject var collection: ArtworkCollection = .shared
+    @ObservedObject var artworkCollection: ArtworkCollection = .shared
     @State var showPicker = false
     @State var selectedImage : UIImage?
     @State var mySelectedImage = String()
@@ -38,14 +38,14 @@ struct MyArtworkCollectionView: View {
                 ScrollView(.vertical, showsIndicators: false){
                     LazyVGrid(columns: gridItemLayout, spacing: 15){
     
-                        ForEach(0..<collection.myDrawings.count,id: \.self){ index in
+                        ForEach(0..<artworkCollection.myDrawings.count,id: \.self){ index in
                             
                             Button(action: {
-                                collection.selectedDrawing = collection.myDrawings[index].url
+                                artworkCollection.selectedDrawing = artworkCollection.myDrawings[index].url
                                 showBigDrawingPreview = true
-                                mySelectedImage = collection.myDrawings[index].url
+                                mySelectedImage = artworkCollection.myDrawings[index].url
                             }) {
-                                let url = collection.myDrawings[index].url
+                                let url = artworkCollection.myDrawings[index].url
                                 
                                 AsyncImage(url: URL(string: url))
                                 { image in
@@ -63,7 +63,7 @@ struct MyArtworkCollectionView: View {
                             .buttonStyle(PlainButtonStyle())
                             
                             .cornerRadius(20.0)
-                            .border(Color.green.opacity(0.60), width: collection.selectedDrawing == collection.myDrawings[index].url ? 5.0 : 0.0 )
+                            .border(Color.green.opacity(0.60), width: artworkCollection.selectedDrawing == artworkCollection.myDrawings[index].url ? 5.0 : 0.0 )
                         }
                     }
                 }

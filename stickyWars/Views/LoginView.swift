@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var email : String = ""
-    @State var password : String = ""
+    @State var email = ""
+    @State var password = ""
     @ObservedObject var userModel: UserModel = .shared
-    @State var signUpViewShow : Bool = false
+    @State var showSignUpView = false
     
     
     var body: some View {
@@ -53,12 +53,12 @@ struct LoginView: View {
                     Text("Not yet signed up? ")
                     
                         .foregroundColor(.white)
-                    Button(action: {signUpViewShow = true}){
+                    Button(action: {showSignUpView = true}){
                         Text("Sign Up")
                     }
                     .foregroundColor(.white)
                     .padding()
-                    .sheet(isPresented: $signUpViewShow, content: {
+                    .sheet(isPresented: $showSignUpView, content: {
                         SignUpView()
                     })
                 }

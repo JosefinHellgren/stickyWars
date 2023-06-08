@@ -28,12 +28,10 @@ struct ImagePicker : UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         //
     }
+    
     func makeCoordinator() -> ImagePickerCoordinator {
         return ImagePickerCoordinator(self)
     }
-    
-    
-    
 }
 
 class ImagePickerCoordinator : NSObject , UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -48,14 +46,12 @@ class ImagePickerCoordinator : NSObject , UIImagePickerControllerDelegate, UINav
         //run this code when user has selected image
 
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            
             let storageRef = Storage.storage().reference()
             let imageData = image.jpegData(compressionQuality: 0.8)
-            guard imageData != nil else{return}
+            
+            guard imageData != nil else {return}
 
             let path = "\(UUID().uuidString).jpeg"
-            
-            
             let fileRef = storageRef.child(path)
             
             let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
@@ -86,7 +82,6 @@ class ImagePickerCoordinator : NSObject , UIImagePickerControllerDelegate, UINav
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         @Binding var showPicker : Bool
         //run code when the user cancels the picker
-        print("cancelled")
         parent.showPicker = false
     }
 }

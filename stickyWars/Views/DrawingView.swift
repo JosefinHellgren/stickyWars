@@ -12,15 +12,12 @@ import UIKit
 
 struct DrawingView: View {
     @State var toolPicker = PKToolPicker()
-    @State var showBigPic : Bool = false
-    @State var selectedImage = String()
     @State private var presentAlert = false
     @State private var nameOfDrawing : String = ""
     @Binding var canvas : PKCanvasView
-    @ObservedObject var collection: ArtworkCollection = .shared
+    
     
     var body: some View {
-        
         ZStack{
             VStack{
                 HStack{
@@ -41,7 +38,7 @@ struct SaveDrawingAlertView : View{
     @Binding var presentAlert : Bool
     @Binding var nameOfDrawing : String
     @Binding var canvas : PKCanvasView
-    @ObservedObject var collection: ArtworkCollection = .shared
+    @ObservedObject var artworkCollection: ArtworkCollection = .shared
     
     var body: some View {
         
@@ -54,7 +51,7 @@ struct SaveDrawingAlertView : View{
             
             Button("Save", action: {
                 let image = canvas.drawing.image(from: CGRect(x: 0, y: 0, width: 400, height: 700), scale: 1.0)
-                collection.saveImageToFirebaseStorage(nameOfDrawing: nameOfDrawing, image: image)
+                artworkCollection.saveImageToFirebaseStorage(nameOfDrawing: nameOfDrawing, image: image)
                 
             })
             Button("Cancel", role: .cancel, action: {})

@@ -14,7 +14,6 @@ import _MapKit_SwiftUI
 struct MapView : View {
     
     @State var popUpIsShowing = false
-    @State var showStartView : Bool = false
     @ObservedObject var gallerys: Gallerys = .shared
     
     @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 59.334591, longitude:  18.063240), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
@@ -77,7 +76,7 @@ struct MapView : View {
                         }
                         
                         Button(action: {
-                            // BUG : how to i go back to startView with the initializer of loadmapfrom storage with the clicked maps name?
+                            // BUG : "how to i go back to startView with the initializer of loadmapfrom storage with the clicked maps name?"
                             //loadMapFromStorage(name: mapName)
                             
                         }){

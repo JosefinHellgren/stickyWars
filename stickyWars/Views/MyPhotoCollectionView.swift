@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MyPhotoCollectionView: View {
     
-    @ObservedObject var collection: ArtworkCollection = .shared
+    @ObservedObject var artworkCollection: ArtworkCollection = .shared
     @State var mySelectedPhoto = String()
     @State var showBigPic : Bool = false
     var gridItemLayout = Array(repeating: GridItem(.flexible(), spacing: 30), count: 2)
@@ -20,14 +20,14 @@ struct MyPhotoCollectionView: View {
             VStack{
                 ScrollView(.vertical, showsIndicators: false){
                     LazyVGrid(columns: gridItemLayout, spacing: 4){
-                        ForEach(0..<collection.myPhotoAlbum.count,id: \.self){ index in
+                        ForEach(0..<artworkCollection.myPhotoAlbum.count,id: \.self){ index in
                             
                             Button(action: {
-                                collection.selectedPhoto = collection.myPhotoAlbum[index].url
+                                artworkCollection.selectedPhoto = artworkCollection.myPhotoAlbum[index].url
                                 showBigPic = true
-                                mySelectedPhoto = collection.myPhotoAlbum[index].url
+                                mySelectedPhoto = artworkCollection.myPhotoAlbum[index].url
                             }){
-                                let url = collection.myPhotoAlbum[index].url
+                                let url = artworkCollection.myPhotoAlbum[index].url
                                 
                                 AsyncImage(url: URL(string: url)) { image in
                                     image.resizable()
@@ -40,7 +40,7 @@ struct MyPhotoCollectionView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                             .cornerRadius(20.0)
-                            .border(Color.green.opacity(0.60), width: collection.selectedPhoto == collection.myPhotoAlbum[index].url ? 5.0 : 0.0 )
+                            .border(Color.green.opacity(0.60), width: artworkCollection.selectedPhoto == artworkCollection.myPhotoAlbum[index].url ? 5.0 : 0.0 )
                         }
                         .padding(15)
                     }

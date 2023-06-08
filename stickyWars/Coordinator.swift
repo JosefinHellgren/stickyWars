@@ -17,51 +17,37 @@ import FirebaseAuth
 
 
 class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
-    static let shared = Coordinator()
+    
     @ObservedObject var user = UserModel()
-    
-    var arView : ARView?
-    
-    
+    static let shared = Coordinator()
     weak var view : ARView?
     
-    @objc func handleTap(recognizer : UITapGestureRecognizer){
-        @ObservedObject var collection: ArtworkCollection = .shared
+    
+    @objc func handleTap(recognizer : UITapGestureRecognizer) {
+        @ObservedObject var artworkCollection: ArtworkCollection = .shared
         
         guard let view = self.view else {return }
         
         let tapLocation = recognizer.location(in: view)
-        if view.entity(at: tapLocation) is ModelEntity{
+        if view.entity(at: tapLocation) is ModelEntity {
             user.updateScore()
         }
         
         let results =   view.raycast(from: tapLocation, allowing: .estimatedPlane, alignment: .vertical)
-        if let results = results.first{
-            print("tapped arview")
-            
-            
-            
+        
+        if let results = results.first {
             let anchor = ARAnchor(name: "plane anchor" , transform: results.worldTransform)
             view.session.add(anchor: anchor)
-            
-            
             let mesh = MeshResource.generateBox(width: 0.5, height: 0.02, depth: 0.5)
-            
             let box = ModelEntity(mesh: mesh)
             box.generateCollisionShapes(recursive: true)
             
-            
-            saveAnchorsToFirestore(anchorID: anchor.identifier, selectedDrawing: collection.selectedDrawing)
-            
+            saveAnchorsToFirestore(anchorID: anchor.identifier, selectedDrawing: artworkCollection.selectedDrawing)
             loadPictureAsTexture(box: box, view: view, anchor: anchor)
-            
         }
-        
     }
     
-    
     func saveAnchorsToFirestore (anchorID : UUID, selectedDrawing : String){
-        
         let anchor = Anchor(identifier: anchorID, image: selectedDrawing)
         let db = Firestore.firestore()
         try? db.collection("Anchors").document(anchorID.uuidString).setData(from: anchor)
@@ -69,9 +55,9 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
     
     
     func loadPictureAsTexture(box : ModelEntity, view: ARView, anchor : ARAnchor){
-        @ObservedObject var collection: ArtworkCollection = .shared
+        @ObservedObject var artworkCollection: ArtworkCollection = .shared
         
-        let urlTest = collection.selectedDrawing
+        let urlTest = artworkCollection.selectedDrawing
         guard let imageURL = URL(string: urlTest) else { return }
         
         let session = URLSession(configuration: .default).dataTask(with: imageURL) { imageData, response, error in
@@ -102,10 +88,7 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
         session.resume()
     }
     
-    
-    
     func loadPictureAsTextureOnMap(box : ModelEntity, view: ARView, anchor : ARAnchor, anchorName : String){
-        @ObservedObject var collection: ArtworkCollection = .shared
         
         let urlTest = anchorName
         
@@ -126,12 +109,10 @@ class Coordinator : NSObject , ARSessionDelegate, ObservableObject {
                         var material = UnlitMaterial()
                         material.color = .init(tint: .white, texture : .init(texture))
                         box.model?.materials = [material]
-                        
                         let anchorentety = AnchorEntity(anchor: anchor)
                         anchorentety.addChild(box)
                         view.scene.addAnchor(anchorentety)
                         view.installGestures(.all, for: box)
-                        
                     }
                 }
             }

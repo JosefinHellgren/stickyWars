@@ -6,44 +6,41 @@
 //
 
 import SwiftUI
-import RealityKit
-import ARKit
+
 import PencilKit
-import CoreLocation
+
 
 struct MainView: View {
     
-    @State private var showingAlert = false
-    @ObservedObject var collection: ArtworkCollection = .shared
+    @ObservedObject var artworkCollection: ArtworkCollection = .shared
     @ObservedObject var userModel: UserModel = .shared
-    @ObservedObject var gallerys: Gallerys = .shared
     @ObservedObject var locationManager : LocationManager = .shared
     @State var coordinator = Coordinator()
     @State var showMapSheet = false
     @State var showPaintSheet = false
-    @State var showPhotoGalleri = false
+    @State var showPhotoGallery = false
     @State var showMyCollectionSheet = false
     @State var showUserInfoSheet = false
     @State var canvas = PKCanvasView()
     @State private var isDarkMode = false
-    @State private var showScore = false
+    
     var body: some View {
-        
+    
         ZStack(alignment: .bottom){
             VStack(){
                 HStack{
                     VStack{
                         HStack{
-                            TopTapButton(sheetBool: $showUserInfoSheet, imageName: "person", action: {showUserInfoSheet.toggle()})
+                            TopTapButton( imageName: "person", actionClosure: {showUserInfoSheet.toggle()})
                                 .sheet(isPresented: $showUserInfoSheet, content: { UserInfoView()})
-                            TopTapButton(sheetBool: $showPaintSheet, imageName: "paintbrush", action:{ showPaintSheet.toggle()})
+                            TopTapButton(imageName: "paintbrush", actionClosure:{ showPaintSheet.toggle()})
                                 .sheet(isPresented: $showPaintSheet, content: {DrawingView(canvas: $canvas)})
-                            TopTapButton(sheetBool: $showMapSheet, imageName: "map", action: {showMapSheet.toggle()})
+                            TopTapButton(imageName: "map", actionClosure: {showMapSheet.toggle()})
                                 .sheet(isPresented: $showMapSheet, content: {MapView()})
-                            TopTapButton(sheetBool: $showMyCollectionSheet, imageName: "backpack", action: {showMyCollectionSheet.toggle()})
+                            TopTapButton(imageName: "backpack", actionClosure: {showMyCollectionSheet.toggle()})
                                 .sheet(isPresented: $showMyCollectionSheet, content: {MyArtworkCollectionView()})
-                            TopTapButton(sheetBool: $showPhotoGalleri, imageName: "photo", action: {showPhotoGalleri.toggle()})
-                                .sheet(isPresented: $showPhotoGalleri, content: {MyPhotoCollectionView()})
+                            TopTapButton( imageName: "photo", actionClosure: {showPhotoGallery.toggle()})
+                                .sheet(isPresented: $showPhotoGallery, content: {MyPhotoCollectionView()})
                             
                             Button(action: {userModel.signOutUser()}){
                                 Image(systemName: "person.fill.xmark")
@@ -58,7 +55,7 @@ struct MainView: View {
                         
                         HStack{
                             ArtworkSaveAlertView()
-                            ArtworkLoaderAlertButton(coordinator: $coordinator)
+                            ArtworkLoaderAlertButton()
                             Button(action: {
                                 coordinator.removeAllAnchors()
                             })
@@ -90,11 +87,11 @@ struct MainView: View {
             .background(LinearGradient(colors: [Color.orange.opacity(0.5), Color.yellow], startPoint: .topLeading, endPoint: .bottomTrailing))
             .preferredColorScheme(isDarkMode ? .dark : .light)
             
-            ArtworkPickerScrollView(showPaintSheet: $showPaintSheet, coordinator: $coordinator, canvas: $canvas)
+            ArtworkPickerScrollView()
         }
         .onAppear() {
-            collection.listenForImagesToFirestore()
-            collection.listenForPhotosFirebase()
+            artworkCollection.listenForImagesToFirestore()
+            artworkCollection.listenForPhotosFirebase()
             locationManager.startLocationUpdates()
         }
     }
@@ -102,13 +99,13 @@ struct MainView: View {
 
 
 struct TopTapButton : View {
-    @Binding var sheetBool : Bool
     let imageName : String
-    var action : () -> Void
+    var actionClosure : () -> Void
     
-    var body: some View{
-        Button(action: action
-        ){
+    var body: some View {
+        
+        Button(action: actionClosure)
+        {
             Image(systemName: imageName)
                 .cornerRadius(20.0)
         }
@@ -119,13 +116,12 @@ struct TopTapButton : View {
 
 struct ArtworkSaveAlertView : View {
     @ObservedObject var gallerys: Gallerys = .shared
-    @ObservedObject var locationManager : LocationManager = .shared
-    @ObservedObject var userModel = UserModel()
     @State var showingAlert = false
-    @State var nameOfWorldMap : String = ""
-    @State var descriptionOfPlacement : String = ""
+    @State var nameOfWorldMap = ""
+    @State var descriptionOfPlacement = ""
     
-    var body: some View{
+    var body: some View {
+        
         Button {
             showingAlert = true
         } label: {
@@ -153,11 +149,8 @@ struct ArtworkSaveAlertView : View {
 }
 
 struct ArtworkLoaderAlertButton : View {
-    @Binding var coordinator : Coordinator
-    
     @State var showingAlert = false
     @State var nameOfWorldMap : String = ""
-    
     
     var body: some View {
         
@@ -187,11 +180,11 @@ struct ArtworkLoaderAlertButton : View {
 }
 
 struct Snapshot: View {
-    @ObservedObject var collection: ArtworkCollection = .shared
+    @ObservedObject var artworkCollection: ArtworkCollection = .shared
     
     var body: some View {
+        
         Button {
-            
             ARViewContainer.ARVariables.arView.snapshot(saveToHDR: false) { (image) in
                 guard let snapshotImage = image else {
                     return
@@ -200,7 +193,7 @@ struct Snapshot: View {
                 if let compressedImageData = snapshotImage.pngData() {
                     let compressedImage = UIImage(data: compressedImageData)
                     if let compressedImage = compressedImage {
-                        collection.savePhotoToFirebaseStorage(image: compressedImage)
+                        artworkCollection.savePhotoToFirebaseStorage(image: compressedImage)
                         UIImageWriteToSavedPhotosAlbum(compressedImage, nil, nil, nil)
                     }
                 }
@@ -217,24 +210,21 @@ struct Snapshot: View {
 }
 
 struct ArtworkPickerScrollView : View {
-    @State var locationManager = LocationManager()
-    @ObservedObject var collection: ArtworkCollection = .shared
-    @Binding var showPaintSheet : Bool
-    @Binding var coordinator : Coordinator
-    @Binding var canvas : PKCanvasView
+    @ObservedObject var artworkCollection: ArtworkCollection = .shared
     
     var body: some View{
+        
         VStack{
             Snapshot()
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(){
-                    ForEach(0..<collection.myDrawings.count,id: \.self) {
+                    ForEach(0..<artworkCollection.myDrawings.count,id: \.self) {
                         index in
                         
                         Button(action: {
-                            collection.selectedDrawing = collection.myDrawings[index].url
+                            artworkCollection.selectedDrawing = artworkCollection.myDrawings[index].url
                         }){
-                            let url = collection.myDrawings[index].url
+                            let url = artworkCollection.myDrawings[index].url
                             
                             AsyncImage(url: URL(string: url))
                             { image in
@@ -248,7 +238,7 @@ struct ArtworkPickerScrollView : View {
                         .buttonStyle(PlainButtonStyle())
                         
                         .cornerRadius(20.0)
-                        .border(Color.pink.opacity(0.60), width: collection.selectedDrawing == collection.myDrawings[index].url ? 5.0 : 0.0 )
+                        .border(Color.pink.opacity(0.60), width: artworkCollection.selectedDrawing == artworkCollection.myDrawings[index].url ? 5.0 : 0.0 )
                         .cornerRadius(20.0)
                     }
                 }
